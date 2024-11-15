@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bm1476k0oh3bp"]
+
+[ext_resource type="Texture2D" uid="uid://dvgykydwu0m0s" path="res://aseprite/base_human.png" id="1_6odou"]
+[ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3mbxy"]
+radius = 0.344028
+height = 1.17484
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+script = ExtResource("1_s7t06")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_3mbxy")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.0023912, 0.941452, 1.77294)
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+texture_filter = 0
+texture = ExtResource("1_6odou")
