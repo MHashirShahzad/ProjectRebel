@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dvgykydwu0m0s"
-path.s3tc="res://.godot/imported/base_human.png-c16baab47174e9d7312df3e724610037.s3tc.ctex"
+path.s3tc="res://.godot/imported/base_human.png-3e0a4ba7aea037aaa6df98e93426fb78.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://aseprite/base_human.png"
-dest_files=["res://.godot/imported/base_human.png-c16baab47174e9d7312df3e724610037.s3tc.ctex"]
+source_file="res://sprites/png/base_human.png"
+dest_files=["res://.godot/imported/base_human.png-3e0a4ba7aea037aaa6df98e93426fb78.s3tc.ctex"]
 
 [params]
 

@@ -4,7 +4,9 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
-
+var facing: Vector3:
+	get: return global_transform.basis.z
+	
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -24,5 +26,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
+		
+	if velocity.x > 0:
+		$Sprite3D.flip_h = true
+	elif velocity.x < 0:
+		$Sprite3D.flip_h = false
 
 	move_and_slide()
