@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=12 format=3 uid="uid://bm1476k0oh3bp"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
@@ -50,23 +50,6 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
-[sub_resource type="Animation" id="Animation_c52lh"]
-resource_name = "move"
-length = 0.4
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_s4vp7"]
 resource_name = "turn_around"
 length = 0.1
@@ -83,12 +66,82 @@ tracks/0/keys = {
 "values": [Vector2i(0, 2)]
 }
 
+[sub_resource type="Animation" id="Animation_1xuld"]
+resource_name = "jump_anticipation"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 3), Vector2i(1, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_r8rgp"]
+resource_name = "jumping"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(2, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_4vw06"]
+resource_name = "falling"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(3, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_c52lh"]
+resource_name = "walking"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3oe43"]
 _data = {
 "RESET": SubResource("Animation_n4smm"),
+"falling": SubResource("Animation_4vw06"),
 "idle": SubResource("Animation_kvbj1"),
-"move": SubResource("Animation_c52lh"),
-"turn_around": SubResource("Animation_s4vp7")
+"jump_anticipation": SubResource("Animation_1xuld"),
+"jumping": SubResource("Animation_r8rgp"),
+"turn_around": SubResource("Animation_s4vp7"),
+"walking": SubResource("Animation_c52lh")
 }
 
 [node name="Player" type="CharacterBody3D"]
