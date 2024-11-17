@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=9 format=3 uid="uid://bm1476k0oh3bp"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tuh0h"]
-size = Vector3(0.130432, 0.188721, 0.0782623)
+size = Vector3(0.130432, 0.186012, 0.0782623)
 
 [sub_resource type="Animation" id="Animation_n4smm"]
 length = 0.001
@@ -20,9 +20,21 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_kvbj1"]
-resource_name = "move"
+resource_name = "idle"
 length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
@@ -38,10 +50,45 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
+[sub_resource type="Animation" id="Animation_c52lh"]
+resource_name = "move"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_s4vp7"]
+resource_name = "turn_around"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 2)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3oe43"]
 _data = {
 "RESET": SubResource("Animation_n4smm"),
-"move": SubResource("Animation_kvbj1")
+"idle": SubResource("Animation_kvbj1"),
+"move": SubResource("Animation_c52lh"),
+"turn_around": SubResource("Animation_s4vp7")
 }
 
 [node name="Player" type="CharacterBody3D"]
@@ -49,7 +96,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00552368, -0.0167236, 0.00357819)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00552368, -0.0153692, 0.00357819)
 shape = SubResource("BoxShape3D_tuh0h")
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -57,13 +104,15 @@ transform = Transform3D(1, 0, 0, 0, 0.960779, 0.277315, 0, -0.277315, 0.960779, 
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 cast_shadow = 2
+alpha_cut = 2
 texture_filter = 0
 texture = ExtResource("2_e4jsu")
 hframes = 16
 vframes = 16
+frame = 16
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3oe43")
 }
-autoplay = "move"
+autoplay = "idle"
