@@ -4,11 +4,11 @@ class_name Player3D
 # <========================== Variables ====================================>
 
 # <----------------------- Exports ---------------------->
-@export var speed : float = 5
-@export var friction : float = 0.04
-@export var acceleration : float = 0.02
-@export var jump_velocity : float = 4.5
-
+@export var speed : float = 10
+@export var friction : float = 0.08
+@export var acceleration : float = 0.04
+@export var jump_velocity : float = 8
+@export var dash_velocity : float = 15
 # <----------------------- Onready ---------------------->
 @onready var sprite_3d: Sprite3D = $Sprite3D
 @onready var ani_player: AnimationPlayer = $AnimationPlayer
@@ -41,8 +41,8 @@ func _input(event: InputEvent) -> void:
 			
 		if wish_dir == Vector2.ZERO:
 			return
-		self.velocity.x = wish_dir.x * 10
-		self.velocity.z = wish_dir.y * 10
+		self.velocity.x = wish_dir.x * dash_velocity
+		self.velocity.z = wish_dir.y * dash_velocity
 		
 		current_state = STATE.DASHING
 		await ani_player.animation_finished

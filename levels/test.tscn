@@ -1,21 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=8 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://levels/test.gd" id="1_5j2bp"]
 [ext_resource type="PackedScene" uid="uid://bm1476k0oh3bp" path="res://player/player.tscn" id="1_nef48"]
 [ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="2_0ubtc"]
+[ext_resource type="Texture2D" uid="uid://7ju7hytoobp6" path="res://sky/Daylight Box_Pieces/Daylight Box_Right.bmp" id="2_sotvb"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fre5u"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_5cmac"]
+panorama = ExtResource("2_sotvb")
+energy_multiplier = 0.1
 
 [sub_resource type="Sky" id="Sky_blat3"]
-sky_material = SubResource("ProceduralSkyMaterial_fre5u")
+sky_material = SubResource("PanoramaSkyMaterial_5cmac")
 
 [sub_resource type="Environment" id="Environment_25t8a"]
 background_mode = 2
 sky = SubResource("Sky_blat3")
-tonemap_mode = 2
+tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
 glow_enabled = true
+glow_bloom = 0.05
 
 [node name="Test" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
@@ -26,7 +30,9 @@ environment = SubResource("Environment_25t8a")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.823496, -0.563085, 0.0692089, 0.552854, -0.769129, 0.320613, -0.127302, 0.302286, 0.944679, 0, 0, 0)
+light_color = Color(1, 1, 0.894118, 1)
 shadow_enabled = true
+shadow_blur = 0.41
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.01791, 0, 8.4638)
@@ -60,3 +66,14 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 5.44827, 0)
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 2.00109, 4.8328, 4.82295)
 players = [NodePath("../Player")]
 angle = -22.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.2394, 2.26116, 0)
+light_color = Color(1, 0, 1, 1)
+omni_range = 7.67659
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.64124, 2.26116, 0)
+light_color = Color(0.744314, 0.609399, 5.77569e-07, 1)
+light_energy = 12.937
+omni_range = 7.67659

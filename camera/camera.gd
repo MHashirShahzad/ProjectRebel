@@ -1,7 +1,7 @@
 extends Camera3D
 
 @export var players : Array[Player3D]
-@export var fixed_dist : Vector3 = Vector3(0, 5,20)
+@export var fixed_dist : Vector3 = Vector3(0, 5,10)
 @export_range(-90, 0, 1, "degrees") var angle : float = -22
 @export_range(0,1,0.1) var cam_speed : float = 0.1
 
