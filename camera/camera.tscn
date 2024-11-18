@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6kmri1nmufuf"]
+
+[ext_resource type="Script" path="res://camera/camera.gd" id="1_pgt50"]
+
+[node name="Camera" type="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+current = true
+script = ExtResource("1_pgt50")
+angle = -15.0

@@ -33,11 +33,12 @@ enum STATE{
 
 # <========================== Functions ========================================>
 
+
 func _input(event: InputEvent) -> void:
-	if current_state == STATE.JUMP_ANTICIPATION || current_state == STATE.DASHING:
-		return
-		
 	if Input.is_action_just_pressed("dash"):
+		if current_state == STATE.DASHING:
+			return
+			
 		if wish_dir == Vector2.ZERO:
 			return
 		self.velocity.x = wish_dir.x * 10
@@ -110,7 +111,7 @@ func update_state():
 		ground_state(vel_round)
 	else:
 		air_state(vel_round)
-	print(current_state)
+	printraw("\rState: ", current_state)
 	
 func ground_state(vel_round : Vector3):
 	if current_state == STATE.JUMP_ANTICIPATION:
@@ -127,10 +128,9 @@ func ground_state(vel_round : Vector3):
 		current_state = STATE.IDLE
 		
 func air_state(vel_round : Vector3):
-	print(vel_round)
-	can_flip_sprite(vel_round)
 	if current_state == STATE.DASHING:
 		return
+	can_flip_sprite(wish_dir)
 	if vel_round.y > 1:
 		current_state = STATE.JUMPING
 	elif vel_round.y < -1:
