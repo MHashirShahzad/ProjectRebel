@@ -1,38 +1,53 @@
-[gd_scene load_steps=15 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=17 format=3 uid="uid://bm1476k0oh3bp"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
-[ext_resource type="Texture2D" uid="uid://cidirhpp2pu3y" path="res://sprites/png/icon.svg" id="3_tkc8s"]
+[ext_resource type="Texture2D" uid="uid://ra1jpgi8nk4o" path="res://sprites/player/shadow.png" id="3_t5uke"]
 [ext_resource type="Script" path="res://player/shadow.gd" id="4_3b8fb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tuh0h"]
 size = Vector3(0.089859, 0.178888, 0.0782623)
+
+[sub_resource type="Shader" id="Shader_kow5r"]
+code = "shader_type spatial;
+
+uniform vec4 color_override;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+    COLOR = tex_color * color_override;  // Multiply texture by override color
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_23bav"]
+render_priority = 0
+shader = SubResource("Shader_kow5r")
 
 [sub_resource type="Animation" id="Animation_n4smm"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/path = NodePath("Sprite3D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"update": 0,
+"values": [Vector2i(0, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite3D:frame_coords")
+tracks/1/path = NodePath("Sprite3D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2i(0, 1)]
+"update": 0,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_ccpy1"]
@@ -47,7 +62,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
+"update": 0,
 "values": [Vector2i(0, 4), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4)]
 }
 
@@ -64,7 +79,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [Vector2i(3, 3)]
 }
 
@@ -81,7 +96,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
+"update": 0,
 "values": [0, 1, 2, 3]
 }
 
@@ -97,7 +112,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
+"update": 0,
 "values": [Vector2i(0, 3), Vector2i(1, 3)]
 }
 
@@ -114,7 +129,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [Vector2i(2, 3)]
 }
 
@@ -130,7 +145,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [Vector2i(0, 2)]
 }
 
@@ -147,7 +162,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
+"update": 0,
 "values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
 }
 
@@ -172,6 +187,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00502778, -0.0197303, 0.00
 shape = SubResource("BoxShape3D_tuh0h")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+material_overlay = SubResource("ShaderMaterial_23bav")
 cast_shadow = 2
 shaded = true
 alpha_cut = 2
@@ -179,7 +195,6 @@ texture_filter = 0
 texture = ExtResource("2_e4jsu")
 hframes = 16
 vframes = 16
-frame = 16
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -191,6 +206,9 @@ autoplay = "idle"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.109094, 0)
 
 [node name="Shadow" type="Sprite3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, -0.1, 0, 0.1, -4.37114e-09, 0, -0.0982182, 0)
-texture = ExtResource("3_tkc8s")
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 0, -0.0982182, 0)
+modulate = Color(100, 0, 100, 1)
+shaded = true
+texture_filter = 0
+texture = ExtResource("3_t5uke")
 script = ExtResource("4_3b8fb")

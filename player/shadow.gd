@@ -6,6 +6,6 @@ func _process(delta: float) -> void:
 	if shadow_cast.is_colliding():
 		self.modulate.a = 1
 		self.global_position = shadow_cast.get_collision_point()
-		self.global_position.y += 0.01
+		self.global_position.y += 0.05
 	else:
 		self.modulate.a = 0
