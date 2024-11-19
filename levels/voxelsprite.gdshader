@@ -17,22 +17,22 @@ uniform vec2 offset = vec2(0.0);
 uniform vec4 color_mix : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 /** 0 is no color mix, 1 is solid color */
 uniform float mix_strength : hint_range(0.0, 1.0) = 0.0;
-/** 2D image where opaque pixels are extruded 
+/** 2D image where opaque pixels are extruded
  * Edges of cube ends up having artifact lines when texture uses mipmaps, so the texture is currently set to automatically filter with nearest, though linear will work as well.
- */ 
+ */
 uniform sampler2D Texture : source_color, filter_nearest;
 /** Amount of times each pixel refers to the original image in order to calculate whether it is part of an extruded section.
  * Ideally as low as possible, as higher numbers cause lag.
  * However, too low and extrusion will have errors, with wrong colors as extrusions sample from incorrect parts of the image (not an issue if you replace the color!) and thinner sections not extruding at all, so must find ideal texture calls per use case. If you will be looking closely at the model, higher texture calls make sense, but if you will not be looking closely or generating a ton of models, then low texture calls is better for performance.
  */
 uniform int texture_calls = 20;
-/** Ray bias value shifts intersecton checks to try to avoid checking empty sides, with higher values searching further from edge. 
+/** Ray bias value shifts intersecton checks to try to avoid checking empty sides, with higher values searching further from edge.
  * Only useful to change at extremely low texture calls to reduce extrusion errors if trying to min-max performance.
- * Extrusions are found by checking evenly along the image from the pixel to edge of image. But if your image is mostly solid at the center, then by shifting intersection checks to mostly skip edge checks, we can reduce wasted texture calls on empty sections. 
+ * Extrusions are found by checking evenly along the image from the pixel to edge of image. But if your image is mostly solid at the center, then by shifting intersection checks to mostly skip edge checks, we can reduce wasted texture calls on empty sections.
  */
 uniform float ray_bias = 1;
 /** Allows hollow regions in texture to extrude infinitely for double the performance on front and back faces.
- * If your model has no significant hollow areas, it makes sense to enable infinite holes for performance. 
+ * If your model has no significant hollow areas, it makes sense to enable infinite holes for performance.
  * When a pixel is found to be part of an extrusion, calculations need to be repeated again to find where exactly extrusion ends by checking the opposite face of the cube.
  */
 uniform bool infinite_holes = false;
@@ -185,12 +185,12 @@ void fragment() {
 	vec3 camera_ray = normalize(frag_pos - CAMERA_POSITION_WORLD);
 	// Get transformed camera ray to handle rotation and scaling
 	vec3 model_ray = normalize((inverse(MODEL_MATRIX) * vec4(camera_ray, 0.0)).xyz);
-	
+
 	// Determine which face of the cube we are looking at
 	ivec2 face = ivec2(UV / vec2(1.0/3.0, 1.0/2.0));
 	// Make each face have similar UV
 	vec2 adjusted_UV = mod(UV,vec2(1.0/3.0, 1.0/2.0)) * vec2(3.0, 2.0);
-	
+
 	// Z
 	if (face.x == 0 && face.y == 0) {
 		// No need to extrude if already on colored pixel
@@ -214,10 +214,10 @@ void fragment() {
 				imgPoint second_pixel = imgExtrude(uv_point, -model_ray.xy, false);
 				// If second raycast does not hit same texture on backface, then that pixel is clear
 				if (model_ray.y <= 0.0 && second_pixel.uv.y < first_pixel.uv.y ) ALPHA = 0.0;
-				else if (model_ray.y > 0.0 && second_pixel.uv.y > first_pixel.uv.y ) ALPHA = 0.0;	
+				else if (model_ray.y > 0.0 && second_pixel.uv.y > first_pixel.uv.y ) ALPHA = 0.0;
 			}
 		}
-	} 
+	}
 	// -Z
 	else if (face.x == 2 && face.y == 0) {
 		// Back face has to be flipped in order to line up with front face
@@ -229,7 +229,7 @@ void fragment() {
 			imgPoint first_pixel = imgExtrude(adjusted_UV, vec2(-model_ray.x, model_ray.y), true);
 			ALBEDO = first_pixel.color.rgb;
 			ALPHA = first_pixel.color.w;
-			
+
 			vec3 point = vec3(UVtoXY(vec2(-adjusted_UV.x, adjusted_UV.y)),-2.0);
 			vec3 ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, model_ray);
 			vec2 uv_point = XYtoUV(ray_intersection.xy) + vec2(1.0,1.0);
@@ -271,7 +271,7 @@ void fragment() {
 		vec4 img_color = imgExtrude(new_uv, model_ray.xy, false).color;
 		ALBEDO = img_color.rgb;
 		ALPHA = img_color.w;
-		
+
 		vec2 xy = UVtoXY(adjusted_UV);
 		if (model_ray.z > 0.0) point = vec3(-1.0, xy.y, -1.0 + xy.x);
 		else point = vec3(-1.0, xy.y, 1.0 + xy.x);
@@ -292,7 +292,7 @@ void fragment() {
 		vec4 img_color = imgExtrude(new_uv, model_ray.xy, false).color;
 		ALBEDO = img_color.rgb;
 		ALPHA = img_color.w;
-		
+
 		vec2 xy = UVtoXY(vec2(-adjusted_UV.x, adjusted_UV.y));
 		if (model_ray.z > 0.0) point = vec3(xy.x, 1.0, xy.y - 1.0);
 		else point = vec3(xy.x, 1.0, xy.y + 1.0);
@@ -314,7 +314,7 @@ void fragment() {
 		vec4 img_color = imgExtrude(new_uv, model_ray.xy, false).color;
 		ALBEDO = img_color.rgb;
 		ALPHA = img_color.w;
-		
+
 		vec2 xy = UVtoXY(adjusted_UV);
 		if (model_ray.z > 0.0) point = vec3(xy.x, -1.0, xy.y - 1.0);
 		else point = vec3(xy.x, -1.0, xy.y + 1.0);

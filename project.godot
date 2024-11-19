@@ -19,6 +19,10 @@ config/icon="res://sprites/icon.svg"
 
 window/size/mode=3
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/dreadpon.spatial_gardener/plugin.cfg")
+
 [global_group]
 
 players=""

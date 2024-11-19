@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://owgspjnd5udw"
-path="res://.godot/imported/hanging_pole.png-187f67b1b96d70fe44914492425a9371.ctex"
+uid="uid://caoyygvd10lg4"
+path="res://.godot/imported/sprite_0050.png-daa10bd30033c4c9a66dcb6e179cf8cb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ase/hanging_pole.png"
-dest_files=["res://.godot/imported/hanging_pole.png-187f67b1b96d70fe44914492425a9371.ctex"]
+source_file="res://sprites/kenney_foliage-sprites/PNG/Flat/sprite_0050.png"
+dest_files=["res://.godot/imported/sprite_0050.png-daa10bd30033c4c9a66dcb6e179cf8cb.ctex"]
 
 [params]
 

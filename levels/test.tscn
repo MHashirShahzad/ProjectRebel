@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="2_0ubtc"]
 [ext_resource type="Texture2D" uid="uid://7ju7hytoobp6" path="res://sky/Daylight Box_Pieces/Daylight Box_Right.bmp" id="2_sotvb"]
 [ext_resource type="PackedScene" uid="uid://dmwn08fyajopo" path="res://hanging_pole/hanging_pole.gltf" id="5_we2uw"]
-[ext_resource type="Texture2D" uid="uid://owgspjnd5udw" path="res://sprites/ase/hanging_pole.png" id="6_n5qq3"]
+[ext_resource type="Texture2D" uid="uid://owgspjnd5udw" path="res://sprites/png/hanging_pole.png" id="6_n5qq3"]
 [ext_resource type="Shader" path="res://levels/voxelsprite.gdshader" id="7_l6do0"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_5cmac"]
@@ -113,6 +113,6 @@ texture_filter = 0
 texture = ExtResource("6_n5qq3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 3.05949, 8.40324)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 39.2148, 3.05949, 8.40324)
 material_override = SubResource("ShaderMaterial_hnnen")
 mesh = SubResource("BoxMesh_bxvux")
