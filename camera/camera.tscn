@@ -1,9 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6kmri1nmufuf"]
+[gd_scene load_steps=5 format=3 uid="uid://b6kmri1nmufuf"]
 
 [ext_resource type="Script" path="res://camera/camera.gd" id="1_pgt50"]
+[ext_resource type="Shader" path="res://camera/vignette.gdshader" id="2_2m6lo"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_726ph"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 34.05
+dof_blur_near_enabled = true
+dof_blur_amount = 0.01
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_em1ss"]
+shader = ExtResource("2_2m6lo")
+shader_parameter/outerRadius = 2.006
+shader_parameter/MainAlpha = 1.0
 
 [node name="Camera" type="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+attributes = SubResource("CameraAttributesPractical_726ph")
 current = true
 script = ExtResource("1_pgt50")
 angle = -15.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_em1ss")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
