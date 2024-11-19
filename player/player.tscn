@@ -1,9 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=15 format=3 uid="uid://bm1476k0oh3bp"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
-[ext_resource type="Shader" path="res://player/colorSwapper.gdshader" id="3_16geb"]
 [ext_resource type="Texture2D" uid="uid://cidirhpp2pu3y" path="res://sprites/png/icon.svg" id="3_tkc8s"]
+[ext_resource type="Script" path="res://player/shadow.gd" id="4_3b8fb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tuh0h"]
 size = Vector3(0.089859, 0.178888, 0.0782623)
@@ -163,14 +163,6 @@ _data = {
 "walking": SubResource("Animation_c52lh")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8y6jw"]
-shader = ExtResource("3_16geb")
-shader_parameter/new_color = Color(0.260712, 0.28186, 1.44392e-07, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b261t"]
-shader = ExtResource("3_16geb")
-shader_parameter/new_color = Color(1, 0, 1, 1)
-
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
@@ -195,14 +187,10 @@ libraries = {
 }
 autoplay = "idle"
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_8y6jw")
-offset_left = 194.0
-offset_top = -1.0
-offset_right = 234.0
-offset_bottom = 39.0
-color = Color(0.267914, 0.209056, 0.312517, 1)
+[node name="ShadowCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.109094, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_b261t")
+[node name="Shadow" type="Sprite3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, -0.1, 0, 0.1, -4.37114e-09, 0, -0.0982182, 0)
 texture = ExtResource("3_tkc8s")
+script = ExtResource("4_3b8fb")
