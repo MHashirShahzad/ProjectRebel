@@ -1,9 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=13 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://levels/test.gd" id="1_5j2bp"]
 [ext_resource type="PackedScene" uid="uid://bm1476k0oh3bp" path="res://player/player.tscn" id="1_nef48"]
 [ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="2_0ubtc"]
 [ext_resource type="Texture2D" uid="uid://7ju7hytoobp6" path="res://sky/Daylight Box_Pieces/Daylight Box_Right.bmp" id="2_sotvb"]
+[ext_resource type="PackedScene" uid="uid://dmwn08fyajopo" path="res://hanging_pole/hanging_pole.gltf" id="5_we2uw"]
+[ext_resource type="Texture2D" uid="uid://owgspjnd5udw" path="res://sprites/ase/hanging_pole.png" id="6_n5qq3"]
+[ext_resource type="Shader" path="res://levels/voxelsprite.gdshader" id="7_l6do0"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_5cmac"]
 panorama = ExtResource("2_sotvb")
@@ -20,6 +23,26 @@ ssao_enabled = true
 ssil_enabled = true
 glow_enabled = true
 glow_bloom = 0.05
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnnen"]
+render_priority = 0
+shader = ExtResource("7_l6do0")
+shader_parameter/extruded_alpha_cull = 1.0
+shader_parameter/opaque_extrude = true
+shader_parameter/keep_image = true
+shader_parameter/image_alpha_cull = 1.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/color_mix = Color(0, 0, 0, 1)
+shader_parameter/mix_strength = 0.0
+shader_parameter/texture_calls = 20
+shader_parameter/ray_bias = 1.0
+shader_parameter/infinite_holes = false
+shader_parameter/Hframes = 1
+shader_parameter/Vframes = 1
+shader_parameter/frame = 0
+shader_parameter/Texture = ExtResource("6_n5qq3")
+
+[sub_resource type="BoxMesh" id="BoxMesh_bxvux"]
 
 [node name="Test" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
@@ -77,3 +100,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.64124, 2.26116, 0)
 light_color = Color(0.744314, 0.609399, 5.77569e-07, 1)
 light_energy = 12.937
 omni_range = 7.67659
+
+[node name="AuxScene" parent="." instance=ExtResource("5_we2uw")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -19.4498, 0.5, 14.9899)
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -13.8954, 3.71218, 15.5038)
+cast_shadow = 2
+shaded = true
+alpha_cut = 2
+texture_filter = 0
+texture = ExtResource("6_n5qq3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 3.05949, 8.40324)
+material_override = SubResource("ShaderMaterial_hnnen")
+mesh = SubResource("BoxMesh_bxvux")
