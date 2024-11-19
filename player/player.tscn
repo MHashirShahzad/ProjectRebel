@@ -96,7 +96,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
+"update": 1,
 "values": [0, 1, 2, 3]
 }
 
@@ -187,6 +187,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00502778, -0.0197303, 0.00
 shape = SubResource("BoxShape3D_tuh0h")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0, 0)
 material_overlay = SubResource("ShaderMaterial_23bav")
 cast_shadow = 2
 shaded = true
@@ -207,6 +208,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.109094, 0)
 
 [node name="Shadow" type="Sprite3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 0, -0.0982182, 0)
+visible = false
 modulate = Color(100, 0, 100, 1)
 shaded = true
 texture_filter = 0

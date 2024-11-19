@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=20 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://levels/test.gd" id="1_5j2bp"]
 [ext_resource type="PackedScene" uid="uid://bm1476k0oh3bp" path="res://player/player.tscn" id="1_nef48"]
@@ -7,17 +7,20 @@
 [ext_resource type="PackedScene" uid="uid://dmwn08fyajopo" path="res://hanging_pole/hanging_pole.gltf" id="5_we2uw"]
 [ext_resource type="Texture2D" uid="uid://owgspjnd5udw" path="res://sprites/png/hanging_pole.png" id="6_n5qq3"]
 [ext_resource type="Shader" path="res://levels/voxelsprite.gdshader" id="7_l6do0"]
+[ext_resource type="PackedScene" uid="uid://dflm2k2u8b5mu" path="res://sky/clouds/clouds_shadowless.tscn" id="8_4usma"]
+[ext_resource type="Shader" path="res://sky/clouds/clouds.gdshader" id="9_3r5nh"]
+[ext_resource type="PackedScene" uid="uid://b4oem2aguvonn" path="res://props/grass/Grass.tscn" id="10_8j33q"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_5cmac"]
 panorama = ExtResource("2_sotvb")
 energy_multiplier = 0.1
 
-[sub_resource type="Sky" id="Sky_blat3"]
+[sub_resource type="Sky" id="Sky_g3xkj"]
 sky_material = SubResource("PanoramaSkyMaterial_5cmac")
 
 [sub_resource type="Environment" id="Environment_25t8a"]
 background_mode = 2
-sky = SubResource("Sky_blat3")
+sky = SubResource("Sky_g3xkj")
 tonemap_mode = 3
 ssao_enabled = true
 ssil_enabled = true
@@ -43,6 +46,29 @@ shader_parameter/frame = 0
 shader_parameter/Texture = ExtResource("6_n5qq3")
 
 [sub_resource type="BoxMesh" id="BoxMesh_bxvux"]
+
+[sub_resource type="Gradient" id="Gradient_emp8x"]
+offsets = PackedFloat32Array(0.456954, 0.960265)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jy2wa"]
+frequency = 0.0154
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5qba4"]
+seamless = true
+color_ramp = SubResource("Gradient_emp8x")
+noise = SubResource("FastNoiseLite_jy2wa")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dwytk"]
+render_priority = 0
+shader = ExtResource("9_3r5nh")
+shader_parameter/isSoft = true
+shader_parameter/speed = 0.005
+shader_parameter/brightness = 0.1
+shader_parameter/threshold = 0.491
+shader_parameter/fluffiness = 0.1
+shader_parameter/noiseTexture = SubResource("NoiseTexture2D_5qba4")
 
 [node name="Test" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
@@ -116,3 +142,10 @@ texture = ExtResource("6_n5qq3")
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 39.2148, 3.05949, 8.40324)
 material_override = SubResource("ShaderMaterial_hnnen")
 mesh = SubResource("BoxMesh_bxvux")
+
+[node name="Clouds" parent="." instance=ExtResource("8_4usma")]
+transform = Transform3D(279.518, 0, 0, 0, 1, 0, 0, 0, 238.198, 0.139587, 62.1593, 20.7271)
+material_override = SubResource("ShaderMaterial_dwytk")
+
+[node name="Grass" parent="." instance=ExtResource("10_8j33q")]
+transform = Transform3D(0.0291952, 0, -0.999574, 0, 1, 0, 0.999574, 0, 0.0291952, -50.8697, 1.23687, 49.6625)
