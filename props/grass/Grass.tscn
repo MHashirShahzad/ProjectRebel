@@ -72,4 +72,7 @@ mesh = SubResource("PlaneMesh_n80us")
 [node name="grass" parent="." instance=ExtResource("1_3p0h3")]
 visible = false
 
+[node name="Grass" parent="grass" index="0"]
+cast_shadow = 0
+
 [editable path="grass"]

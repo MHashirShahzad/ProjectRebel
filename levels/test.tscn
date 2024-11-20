@@ -1,9 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=21 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://levels/test.gd" id="1_5j2bp"]
 [ext_resource type="PackedScene" uid="uid://bm1476k0oh3bp" path="res://player/player.tscn" id="1_nef48"]
 [ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="2_0ubtc"]
-[ext_resource type="Texture2D" uid="uid://7ju7hytoobp6" path="res://sky/Daylight Box_Pieces/Daylight Box_Right.bmp" id="2_sotvb"]
+[ext_resource type="Shader" path="res://levels/stylzied_sky.gdshader" id="2_y40r0"]
 [ext_resource type="PackedScene" uid="uid://dmwn08fyajopo" path="res://hanging_pole/hanging_pole.gltf" id="5_we2uw"]
 [ext_resource type="Texture2D" uid="uid://owgspjnd5udw" path="res://sprites/png/hanging_pole.png" id="6_n5qq3"]
 [ext_resource type="Shader" path="res://levels/voxelsprite.gdshader" id="7_l6do0"]
@@ -11,21 +11,70 @@
 [ext_resource type="Shader" path="res://sky/clouds/clouds.gdshader" id="9_3r5nh"]
 [ext_resource type="PackedScene" uid="uid://b4oem2aguvonn" path="res://props/grass/Grass.tscn" id="10_8j33q"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_5cmac"]
-panorama = ExtResource("2_sotvb")
-energy_multiplier = 0.1
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a2gqd"]
+shader = ExtResource("2_y40r0")
+shader_parameter/clouds_samples = 16
+shader_parameter/shadow_sample = 4
+shader_parameter/clouds_density = 0.5
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_smoothness = 0.035
+shader_parameter/clouds_light_color = null
+shader_parameter/clouds_shadow_intensity = 1.0
+shader_parameter/high_clouds_density = 0.0
+shader_parameter/top_color = Color(0.34902, 0.588235, 1, 1)
+shader_parameter/bottom_color = Color(0, 0.329412, 0.968627, 1)
+shader_parameter/sun_scatter = Color(0.298039, 0.298039, 0.298039, 1)
+shader_parameter/astro_tint = Color(0, 0, 0, 1)
+shader_parameter/astro_scale = 1.0
+shader_parameter/astro_intensity = 1.0
+shader_parameter/stars_intensity = 0.0
+shader_parameter/shooting_stars_intensity = 0.0
+shader_parameter/shooting_star_tint = null
 
 [sub_resource type="Sky" id="Sky_g3xkj"]
-sky_material = SubResource("PanoramaSkyMaterial_5cmac")
+sky_material = SubResource("ShaderMaterial_a2gqd")
 
 [sub_resource type="Environment" id="Environment_25t8a"]
 background_mode = 2
 sky = SubResource("Sky_g3xkj")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.31
+reflected_light_source = 2
 tonemap_mode = 3
 ssao_enabled = true
 ssil_enabled = true
 glow_enabled = true
 glow_bloom = 0.05
+adjustment_contrast = 1.3
+adjustment_saturation = 1.48
+
+[sub_resource type="Gradient" id="Gradient_emp8x"]
+offsets = PackedFloat32Array(0.52649, 0.993378)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jy2wa"]
+frequency = 0.0154
+fractal_weighted_strength = 0.02
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5qba4"]
+invert = true
+seamless = true
+color_ramp = SubResource("Gradient_emp8x")
+noise = SubResource("FastNoiseLite_jy2wa")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dwytk"]
+render_priority = 0
+shader = ExtResource("9_3r5nh")
+shader_parameter/isSoft = true
+shader_parameter/speed = 0.005
+shader_parameter/brightness = 0.1
+shader_parameter/threshold = 0.49
+shader_parameter/fluffiness = 0.1
+shader_parameter/noiseTexture = SubResource("NoiseTexture2D_5qba4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7vhhr"]
+albedo_color = Color(0.188235, 0.231373, 0.0627451, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hnnen"]
 render_priority = 0
@@ -47,29 +96,6 @@ shader_parameter/Texture = ExtResource("6_n5qq3")
 
 [sub_resource type="BoxMesh" id="BoxMesh_bxvux"]
 
-[sub_resource type="Gradient" id="Gradient_emp8x"]
-offsets = PackedFloat32Array(0.456954, 0.960265)
-colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_jy2wa"]
-frequency = 0.0154
-domain_warp_enabled = true
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5qba4"]
-seamless = true
-color_ramp = SubResource("Gradient_emp8x")
-noise = SubResource("FastNoiseLite_jy2wa")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dwytk"]
-render_priority = 0
-shader = ExtResource("9_3r5nh")
-shader_parameter/isSoft = true
-shader_parameter/speed = 0.005
-shader_parameter/brightness = 0.1
-shader_parameter/threshold = 0.491
-shader_parameter/fluffiness = 0.1
-shader_parameter/noiseTexture = SubResource("NoiseTexture2D_5qba4")
-
 [node name="Test" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
 script = ExtResource("1_5j2bp")
@@ -78,74 +104,78 @@ script = ExtResource("1_5j2bp")
 environment = SubResource("Environment_25t8a")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.823496, -0.563085, 0.0692089, 0.552854, -0.769129, 0.320613, -0.127302, 0.302286, 0.944679, 0, 0, 0)
+transform = Transform3D(-0.892313, -0.183436, 0.412466, 0.440074, -0.55703, 0.70431, 0.10056, 0.809981, 0.577771, 0, 0, 0)
 light_color = Color(1, 1, 0.894118, 1)
 shadow_enabled = true
 shadow_blur = 0.41
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.01791, 0, 8.4638)
+[node name="Clouds" parent="." instance=ExtResource("8_4usma")]
+transform = Transform3D(279.518, 0, 0, 0, 1, 0, 0, 0, 238.198, 0.139587, 62.1593, 20.7271)
+material_override = SubResource("ShaderMaterial_dwytk")
+
+[node name="Level" type="Node" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, -3.8147e-06, 8.46502)
+material_override = SubResource("StandardMaterial3D_7vhhr")
 use_collision = true
 size = Vector3(212.466, 1, 130.33)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.27108, 1.24124, -2.56834)
+[node name="CSGBox3D2" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41067, 1.24124, -2.56712)
 use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.0106, 1.24124, -2.56834)
+[node name="CSGBox3D3" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.871, 1.24124, -2.56712)
 use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.04495, 1.24124, -28.8228)
+[node name="CSGBox3D4" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.90536, 1.24124, -28.8216)
 use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.2412, 1.24124, -28.8213)
+[node name="CSGBox3D5" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.3808, 1.24124, -28.8201)
 use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
-[node name="Player" parent="." instance=ExtResource("1_nef48")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 5.44827, 0)
+[node name="Player" parent="Level" instance=ExtResource("1_nef48")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -0.139587, 5.44827, 0.0012207)
 
-[node name="Camera" parent="." node_paths=PackedStringArray("players") instance=ExtResource("2_0ubtc")]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 2.00109, 4.8328, 4.82295)
+[node name="Camera" parent="Level" node_paths=PackedStringArray("players") instance=ExtResource("2_0ubtc")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.8615, 4.8328, 4.82417)
 players = [NodePath("../Player")]
 angle = -22.0
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.2394, 2.26116, 0)
+[node name="OmniLight3D" type="OmniLight3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0998, 2.26116, 0.0012207)
 light_color = Color(1, 0, 1, 1)
 omni_range = 7.67659
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.64124, 2.26116, 0)
+[node name="OmniLight3D2" type="OmniLight3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.78083, 2.26116, 0.0012207)
 light_color = Color(0.744314, 0.609399, 5.77569e-07, 1)
 light_energy = 12.937
 omni_range = 7.67659
 
-[node name="AuxScene" parent="." instance=ExtResource("5_we2uw")]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -19.4498, 0.5, 14.9899)
+[node name="AuxScene" parent="Level" instance=ExtResource("5_we2uw")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -19.5894, 0.499996, 14.9911)
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -13.8954, 3.71218, 15.5038)
+[node name="Sprite3D" type="Sprite3D" parent="Level"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -14.035, 3.71218, 15.505)
 cast_shadow = 2
 shaded = true
 alpha_cut = 2
 texture_filter = 0
 texture = ExtResource("6_n5qq3")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 39.2148, 3.05949, 8.40324)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 39.0752, 3.05949, 8.40446)
 material_override = SubResource("ShaderMaterial_hnnen")
 mesh = SubResource("BoxMesh_bxvux")
+skeleton = NodePath("../..")
 
-[node name="Clouds" parent="." instance=ExtResource("8_4usma")]
-transform = Transform3D(279.518, 0, 0, 0, 1, 0, 0, 0, 238.198, 0.139587, 62.1593, 20.7271)
-material_override = SubResource("ShaderMaterial_dwytk")
-
-[node name="Grass" parent="." instance=ExtResource("10_8j33q")]
-transform = Transform3D(0.0291952, 0, -0.999574, 0, 1, 0, 0.999574, 0, 0.0291952, -50.8697, 1.23687, 49.6625)
+[node name="Grass" parent="Level" instance=ExtResource("10_8j33q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2811, 1.20131, 48.5522)
