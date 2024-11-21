@@ -9,4 +9,4 @@ func _input(event: InputEvent) -> void:
 		player.position.x = randi_range(-10, 10)
 		player.position.y = 5
 		player.position.z = randi_range(-10, 10)
-		$Camera.update_players()
+		$Level/Camera.update_players()

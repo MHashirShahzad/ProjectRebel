@@ -60,6 +60,7 @@ buffer = PackedFloat32Array(0, 0, -1.001, 10.9079, 0, 1.001, 0, -0.767185, 1.001
 [node name="Grass" type="Node3D"]
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(0.999998, -0.000900293, -0.0015157, 0.000901784, 0.999999, 0.000994847, 0.00151481, -0.000996197, 0.999998, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_mc0di")
 cast_shadow = 0
 lod_bias = 0.001

@@ -7,7 +7,7 @@ offsets = PackedFloat32Array(0.506622, 1)
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_f8m2n"]
-noise_type = 3
+noise_type = 2
 frequency = 0.0118
 domain_warp_enabled = true
 

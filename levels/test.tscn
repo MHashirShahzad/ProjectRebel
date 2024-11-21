@@ -104,7 +104,7 @@ script = ExtResource("1_5j2bp")
 environment = SubResource("Environment_25t8a")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.892313, -0.183436, 0.412466, 0.440074, -0.55703, 0.70431, 0.10056, 0.809981, 0.577771, 0, 0, 0)
+transform = Transform3D(-0.869531, -0.210676, 0.446689, 0.483532, -0.547308, 0.683118, 0.10056, 0.809981, 0.577771, 0, 0, 0)
 light_color = Color(1, 1, 0.894118, 1)
 shadow_enabled = true
 shadow_blur = 0.41
@@ -179,3 +179,9 @@ skeleton = NodePath("../..")
 
 [node name="Grass" parent="Level" instance=ExtResource("10_8j33q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2811, 1.20131, 48.5522)
+
+[node name="GrassBase" parent="Level/Grass" index="1"]
+cast_shadow = 0
+
+[editable path="Level/Grass"]
+[editable path="Level/Grass/grass"]
