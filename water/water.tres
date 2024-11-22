@@ -309,7 +309,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-42.8692, -137.059)
+graph_offset = Vector2(-329.889, -82.1815)
 nodes/vertex/2/node = SubResource("VisualShaderNodeUVFunc_j3yvx")
 nodes/vertex/2/position = Vector2(-740, 180)
 nodes/vertex/3/node = SubResource("VisualShaderNodeInput_s1xg2")
@@ -324,7 +324,7 @@ nodes/vertex/7/node = SubResource("VisualShaderNodeMultiplyAdd_n5ax8")
 nodes/vertex/7/position = Vector2(-140, 200)
 nodes/vertex/8/node = SubResource("VisualShaderNodeVectorOp_7iakd")
 nodes/vertex/8/position = Vector2(-587.709, 484.759)
-nodes/vertex/connections = PackedInt32Array(3, 0, 2, 1, 2, 0, 4, 0, 4, 0, 7, 0, 6, 0, 7, 2, 7, 0, 0, 0, 5, 0, 8, 0, 8, 0, 7, 1)
+nodes/vertex/connections = PackedInt32Array(3, 0, 2, 1, 2, 0, 4, 0, 4, 0, 7, 0, 6, 0, 7, 2, 5, 0, 8, 0, 8, 0, 7, 1, 7, 0, 0, 0)
 nodes/fragment/0/position = Vector2(840, 320)
 nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_4elbc")
 nodes/fragment/2/position = Vector2(-320, 220)
@@ -378,4 +378,4 @@ nodes/fragment/28/node = SubResource("VisualShaderNodeInput_dwby5")
 nodes/fragment/28/position = Vector2(-720, 80)
 nodes/fragment/29/node = SubResource("VisualShaderNodeTexture_uyjfy")
 nodes/fragment/29/position = Vector2(-140, -100)
-nodes/fragment/connections = PackedInt32Array(2, 0, 4, 0, 5, 0, 3, 0, 6, 0, 5, 2, 7, 0, 8, 0, 9, 0, 7, 2, 3, 0, 10, 0, 8, 0, 10, 1, 10, 0, 11, 0, 11, 0, 4, 1, 12, 0, 0, 1, 13, 0, 0, 3, 11, 0, 0, 5, 14, 0, 15, 0, 15, 0, 21, 1, 20, 0, 21, 0, 15, 0, 22, 0, 22, 0, 23, 1, 21, 0, 23, 0, 24, 0, 17, 0, 17, 0, 20, 0, 18, 0, 25, 0, 15, 0, 25, 2, 25, 0, 24, 0, 4, 0, 26, 0, 23, 0, 26, 2, 27, 0, 29, 0, 28, 0, 27, 2, 26, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(2, 0, 4, 0, 5, 0, 3, 0, 6, 0, 5, 2, 7, 0, 8, 0, 9, 0, 7, 2, 3, 0, 10, 0, 8, 0, 10, 1, 10, 0, 11, 0, 11, 0, 4, 1, 13, 0, 0, 3, 11, 0, 0, 5, 14, 0, 15, 0, 15, 0, 21, 1, 20, 0, 21, 0, 15, 0, 22, 0, 22, 0, 23, 1, 21, 0, 23, 0, 24, 0, 17, 0, 17, 0, 20, 0, 18, 0, 25, 0, 15, 0, 25, 2, 25, 0, 24, 0, 4, 0, 26, 0, 23, 0, 26, 2, 27, 0, 29, 0, 28, 0, 27, 2, 12, 0, 0, 1, 26, 0, 0, 0)
