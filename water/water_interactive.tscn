@@ -1,0 +1,177 @@
+[gd_scene load_steps=14 format=3 uid="uid://ctsta72tajnt2"]
+
+[ext_resource type="Shader" path="res://water/water_interactive.gdshader" id="1_ifow4"]
+[ext_resource type="Shader" uid="uid://qpfqxa3rob07" path="res://water/water_interactive_vs.tres" id="2_8dffu"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8d0rc"]
+viewport_path = NodePath("Collision")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mn326"]
+viewport_path = NodePath("Simulation")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0o60k"]
+resource_local_to_scene = true
+shader = ExtResource("1_ifow4")
+shader_parameter/phase = 0.18
+shader_parameter/attenuation = 0.995
+shader_parameter/deltaUV = 2.3
+shader_parameter/sim_tex = SubResource("ViewportTexture_mn326")
+shader_parameter/col_tex = SubResource("ViewportTexture_8d0rc")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gw57h"]
+viewport_path = NodePath("Simulation")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k727j"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_8dffu")
+shader_parameter/Texture2DParameter = SubResource("ViewportTexture_gw57h")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_e17o7"]
+material = SubResource("ShaderMaterial_k727j")
+size = Vector2(10, 10)
+subdivide_width = 500
+subdivide_depth = 500
+
+[sub_resource type="SphereMesh" id="SphereMesh_kokfw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ib5bf"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_aavlm"]
+resource_name = "loop"
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 2.30166, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.333333, 0.833333)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-0.109424, -0.25, 0, 0.25, 0, 1.93932, -0.25, 0, 0.25, 0, 0.445851, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.333333, 0.833333)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.333333, 0.833333)
+}
+
+[sub_resource type="Animation" id="Animation_qt8eh"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1.93932, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f0b8n"]
+_data = {
+"RESET": SubResource("Animation_qt8eh"),
+"loop": SubResource("Animation_aavlm")
+}
+
+[node name="Waterinteractive" type="Node3D"]
+
+[node name="Simulation" type="SubViewport" parent="."]
+size = Vector2i(514, 514)
+render_target_clear_mode = 2
+render_target_update_mode = 4
+
+[node name="ColorRect" type="ColorRect" parent="Simulation"]
+material = SubResource("ShaderMaterial_0o60k")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Water" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_e17o7")
+
+[node name="Collision" type="SubViewport" parent="."]
+size = Vector2i(514, 514)
+
+[node name="Camera3D" type="Camera3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -5, 0)
+cull_mask = 524288
+projection = 1
+size = 10.0
+far = 5.0
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139404, 0, -5.35988)
+size = Vector3(10.0503, 1, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.6726)
+size = Vector3(10.0503, 1, 1)
+
+[node name="Ball" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93932, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ball"]
+mesh = SubResource("SphereMesh_kokfw")
+skeleton = NodePath("../..")
+
+[node name="WaterCollision" type="MeshInstance3D" parent="Ball"]
+layers = 524288
+material_override = SubResource("StandardMaterial3D_ib5bf")
+mesh = SubResource("SphereMesh_kokfw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ball"]
+libraries = {
+"": SubResource("AnimationLibrary_f0b8n")
+}
+autoplay = "loop"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.0697216, 0, 0.997567, 0, 1, 0, -0.997567, 0, -0.0697216, 7.18659, 3.02839, 0)
+current = true

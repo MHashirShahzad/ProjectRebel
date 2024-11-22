@@ -85,6 +85,10 @@ cam_zoom_out={
 ]
 }
 
+[layer_names]
+
+3d_render/layer_20="WaterCollision"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

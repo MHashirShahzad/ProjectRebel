@@ -50,8 +50,8 @@ func update_cam():
 	destined_pos += fixed_dist
 	
 	# constant
+	largest_dist = clamp(largest_dist, 0, 35)
 	destined_pos.z += largest_dist / 3 
-	destined_pos.z = clamp(destined_pos.z, 10, 35)
 		
 	# Angele and pos
 	self.rotation_degrees.x = angle
