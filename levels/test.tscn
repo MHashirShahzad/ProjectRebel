@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=27 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://levels/test.gd" id="1_5j2bp"]
 [ext_resource type="PackedScene" uid="uid://bm1476k0oh3bp" path="res://player/player.tscn" id="1_nef48"]
@@ -10,6 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://dflm2k2u8b5mu" path="res://sky/clouds/clouds_shadowless.tscn" id="8_4usma"]
 [ext_resource type="Shader" path="res://sky/clouds/clouds.gdshader" id="9_3r5nh"]
 [ext_resource type="PackedScene" uid="uid://b4oem2aguvonn" path="res://props/grass/Grass.tscn" id="10_8j33q"]
+[ext_resource type="PackedScene" uid="uid://ctsta72tajnt2" path="res://water/water_interactive.tscn" id="11_wpnmr"]
+[ext_resource type="Shader" path="res://water/water_interactive.gdshader" id="12_mqyhb"]
+[ext_resource type="PackedScene" uid="uid://b6cxf4wfyee07" path="res://water/water.tscn" id="13_f10ba"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a2gqd"]
 shader = ExtResource("2_y40r0")
@@ -95,6 +98,21 @@ shader_parameter/frame = 0
 shader_parameter/Texture = ExtResource("6_n5qq3")
 
 [sub_resource type="BoxMesh" id="BoxMesh_bxvux"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_s748l"]
+viewport_path = NodePath("Collision")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ry0i2"]
+viewport_path = NodePath("Simulation")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_effcf"]
+resource_local_to_scene = true
+shader = ExtResource("12_mqyhb")
+shader_parameter/phase = 0.18
+shader_parameter/attenuation = 0.995
+shader_parameter/deltaUV = 2.3
+shader_parameter/sim_tex = SubResource("ViewportTexture_ry0i2")
+shader_parameter/col_tex = SubResource("ViewportTexture_s748l")
 
 [node name="Test" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
@@ -183,5 +201,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2811, 1.20131, 48.5522)
 [node name="GrassBase" parent="Level/Grass" index="1"]
 cast_shadow = 0
 
+[node name="Waterinteractive" parent="." instance=ExtResource("11_wpnmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2671, 1.33647, 50.1174)
+
+[node name="ColorRect" parent="Waterinteractive/Simulation" index="0"]
+material = SubResource("ShaderMaterial_effcf")
+
+[node name="Water" parent="." instance=ExtResource("13_f10ba")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.69973, 1.76632, 49.7561)
+
 [editable path="Level/Grass"]
 [editable path="Level/Grass/grass"]
+[editable path="Waterinteractive"]

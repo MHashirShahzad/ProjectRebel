@@ -8,21 +8,6 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_tuh0h"]
 size = Vector3(0.089859, 0.178888, 0.0782623)
 
-[sub_resource type="Shader" id="Shader_kow5r"]
-code = "shader_type spatial;
-
-uniform vec4 color_override;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-    COLOR = tex_color * color_override;  // Multiply texture by override color
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_23bav"]
-render_priority = 0
-shader = SubResource("Shader_kow5r")
-
 [sub_resource type="Animation" id="Animation_n4smm"]
 length = 0.001
 tracks/0/type = "value"
@@ -178,6 +163,14 @@ _data = {
 "walking": SubResource("Animation_c52lh")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hlv6e"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_2glx7"]
+radius = 0.05
+height = 0.1
+
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
@@ -188,7 +181,6 @@ shape = SubResource("BoxShape3D_tuh0h")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0, 0)
-material_overlay = SubResource("ShaderMaterial_23bav")
 cast_shadow = 2
 shaded = true
 alpha_cut = 2
@@ -214,3 +206,8 @@ shaded = true
 texture_filter = 0
 texture = ExtResource("3_t5uke")
 script = ExtResource("4_3b8fb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 524288
+material_override = SubResource("StandardMaterial3D_hlv6e")
+mesh = SubResource("SphereMesh_2glx7")

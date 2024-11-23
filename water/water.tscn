@@ -5,7 +5,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ay2vy"]
 render_priority = 0
 shader = ExtResource("1_q4jvl")
-shader_parameter/WaterColor = Color(1, 1, 1, 1)
+shader_parameter/WaterColor = Color(0, 0.266667, 0.533333, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ymioc"]
 material = SubResource("ShaderMaterial_ay2vy")
