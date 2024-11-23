@@ -1,7 +1,7 @@
 [gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://qpfqxa3rob07"]
 
 [sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_oqmf6"]
-parameter_name = "Texture2DParameter"
+parameter_name = "Simulation"
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_r5agp"]
 input_name = "uv"
@@ -16,7 +16,7 @@ source = 5
 code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
 
-uniform sampler2D Texture2DParameter;
+uniform sampler2D Simulation;
 
 
 
@@ -27,7 +27,7 @@ void fragment() {
 
 	vec4 n_out4p0;
 // Texture2D:4
-	n_out4p0 = texture(Texture2DParameter, n_out3p0);
+	n_out4p0 = texture(Simulation, n_out3p0);
 	float n_out4p1 = n_out4p0.r;
 
 
@@ -43,7 +43,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-37, -78)
+graph_offset = Vector2(-199.837, -84.1555)
 nodes/fragment/0/position = Vector2(820, 100)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_oqmf6")
 nodes/fragment/2/position = Vector2(-120, 340)

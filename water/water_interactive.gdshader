@@ -10,8 +10,8 @@ uniform float deltaUV = 3;
 void fragment() {
 	vec2 uv = vec2(UV.x, 1.0 - UV.y);
 	
-	float dv = 1.0 / 512.0; // screen size
-	float du = 1.0 / 512.0;
+	float dv = 1.0 / 514.0; // screen size
+	float du = 1.0 / 514.0;
 	
 	vec3 duv = vec3(du, dv, 0) * deltaUV;
 	
