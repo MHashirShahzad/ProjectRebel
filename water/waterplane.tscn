@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://csvfnyjxb3y6x"]
+
+[ext_resource type="Shader" path="res://water/water.gdshader" id="1_j014c"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hicvc"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4sgwi"]
+as_normal_map = true
+bump_strength = 24.5
+noise = SubResource("FastNoiseLite_hicvc")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jfj04"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tjnmp"]
+seamless = true
+as_normal_map = true
+bump_strength = 18.3
+noise = SubResource("FastNoiseLite_jfj04")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7lq8r"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fqb04"]
+seamless = true
+bump_strength = 1.5
+noise = SubResource("FastNoiseLite_7lq8r")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4iwuk"]
+render_priority = 0
+shader = ExtResource("1_j014c")
+shader_parameter/albedo = Color(0, 0.3, 0.4, 1)
+shader_parameter/albedo2 = Color(0, 0.47451, 0.764706, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_scale = 0.15
+shader_parameter/color_deep = Color(0, 0.188235, 0.254902, 1)
+shader_parameter/color_shallow = Color(0, 0.47451, 0.619608, 1)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = 0.1
+shader_parameter/near = 1.0
+shader_parameter/far = 100000.0
+shader_parameter/edge_color = Color(0, 0, 0, 1)
+shader_parameter/wave = SubResource("NoiseTexture2D_fqb04")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_4sgwi")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_tjnmp")
+
+[sub_resource type="QuadMesh" id="QuadMesh_51r8p"]
+subdivide_width = 200
+subdivide_depth = 200
+orientation = 1
+
+[node name="Waterplane" type="MeshInstance3D"]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -0.313709, 0, 0.0141084)
+material_override = SubResource("ShaderMaterial_4iwuk")
+mesh = SubResource("QuadMesh_51r8p")

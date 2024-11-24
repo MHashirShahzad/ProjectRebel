@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=15 format=3 uid="uid://bm1476k0oh3bp"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
@@ -163,14 +163,6 @@ _data = {
 "walking": SubResource("Animation_c52lh")
 }
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hlv6e"]
-shading_mode = 0
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_2glx7"]
-radius = 0.05
-height = 0.1
-
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
@@ -183,7 +175,7 @@ shape = SubResource("BoxShape3D_tuh0h")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0, 0)
 cast_shadow = 2
 shaded = true
-alpha_cut = 2
+alpha_cut = 3
 texture_filter = 0
 texture = ExtResource("2_e4jsu")
 hframes = 16
@@ -206,8 +198,3 @@ shaded = true
 texture_filter = 0
 texture = ExtResource("3_t5uke")
 script = ExtResource("4_3b8fb")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-layers = 524288
-material_override = SubResource("StandardMaterial3D_hlv6e")
-mesh = SubResource("SphereMesh_2glx7")

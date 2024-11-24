@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6cxf4wfyee07"]
+[gd_scene load_steps=4 format=3 uid="uid://b6cxf4wfyee07"]
 
 [ext_resource type="Shader" uid="uid://cp20wpwwydfy4" path="res://water/water.tres" id="1_q4jvl"]
 
@@ -13,18 +13,9 @@ size = Vector2(10, 10)
 subdivide_width = 20
 subdivide_depth = 20
 
-[sub_resource type="BoxMesh" id="BoxMesh_sfmi8"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_fqj74"]
-
 [node name="Water" type="Node3D"]
 
 [node name="Water" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_ymioc")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_sfmi8")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.26823, 0.963355, 0, -0.963355, 0.26823, 2.30538, 0, 0)
-mesh = SubResource("CylinderMesh_fqj74")
+[node name="CSGBox3D" type="CSGBox3D" parent="."]

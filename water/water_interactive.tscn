@@ -38,6 +38,7 @@ shader_parameter/simulation2 = SubResource("ViewportTexture_6qrv4")
 shader_parameter/simulation = SubResource("ViewportTexture_p6dt6")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_e17o7"]
+resource_local_to_scene = true
 material = SubResource("ShaderMaterial_hv1l4")
 size = Vector2(10.1, 10.1)
 subdivide_width = 500
@@ -76,27 +77,3 @@ environment = SubResource("Environment_83g0d")
 projection = 1
 size = 10.1
 far = 5.0
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.52406, -4.44653, -0.00698853)
-size = Vector3(1, 9.89307, 10.8287)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.42698, -4.44653, -0.00698853)
-size = Vector3(1, 9.89307, 10.8287)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(0.0365042, 0, -0.999334, 0, 1, 0, 0.999334, 0, 0.0365042, 0.158868, -4.20068, 5.98007)
-size = Vector3(1, 9.89307, 12.9724)
-
-[node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(0.170348, 0.381867, -0.908383, -0.982526, -0.00433728, -0.186076, -0.0749961, 0.924207, 0.374456, -1.47542, -10.9267, 0.793038)
-size = Vector3(1, 16.9128, 22.8632)
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="."]
-transform = Transform3D(0.0365042, 0, -0.999334, 0, 1, 0, 0.999334, 0, 0.0365042, 0.158868, -4.20068, -4.98737)
-size = Vector3(1, 9.89307, 12.9724)
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.999322, -1.96041e-09, -0.0368181, -0.00675316, 0.983035, 0.183295, 0.0361935, 0.183419, -0.982368, 0, 3.63223, -13.2828)
-fov = 95.5211
