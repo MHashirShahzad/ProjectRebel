@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b6kmri1nmufuf"]
+[gd_scene load_steps=7 format=3 uid="uid://b6kmri1nmufuf"]
 
 [ext_resource type="Script" path="res://camera/camera.gd" id="1_pgt50"]
 [ext_resource type="Shader" path="res://camera/vignette.gdshader" id="2_2m6lo"]
+[ext_resource type="Shader" path="res://camera/film_grain.gdshader" id="2_px82v"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_726ph"]
 dof_blur_far_enabled = true
@@ -9,10 +10,15 @@ dof_blur_far_distance = 34.05
 dof_blur_near_enabled = true
 dof_blur_amount = 0.01
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_em1ss"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ra3ua"]
 shader = ExtResource("2_2m6lo")
-shader_parameter/outerRadius = 1.646
+shader_parameter/outerRadius = 1.615
 shader_parameter/MainAlpha = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_em1ss"]
+shader = ExtResource("2_px82v")
+shader_parameter/grain_amount = 0.01
+shader_parameter/grain_size = 0.1
 
 [node name="Camera" type="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
@@ -31,6 +37,15 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Vignette" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_ra3ua")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FilmGrain" type="ColorRect" parent="Control"]
 material = SubResource("ShaderMaterial_em1ss")
 layout_mode = 1
 anchors_preset = 15

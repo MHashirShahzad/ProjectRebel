@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbb27q2f6dph6"]
+
+[ext_resource type="Shader" path="res://sky/sky.gdshader" id="1_5whij"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ihrcu"]
+shader = ExtResource("1_5whij")
+shader_parameter/sky_color = null
+
+[sub_resource type="Sky" id="Sky_g3xkj"]
+sky_material = SubResource("ShaderMaterial_ihrcu")
+
+[sub_resource type="Environment" id="Environment_2ixfc"]
+background_mode = 2
+sky = SubResource("Sky_g3xkj")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.31
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_exposure = 1.23
+sdfgi_use_occlusion = true
+glow_enabled = true
+glow_bloom = 0.05
+volumetric_fog_anisotropy = 0.7
+volumetric_fog_length = 4.0
+adjustment_contrast = 1.3
+adjustment_saturation = 1.48
+
+[sub_resource type="SphereMesh" id="SphereMesh_cluc0"]
+
+[node name="Sky" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2ixfc")
+
+[node name="Sun" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.25156, 0)
+mesh = SubResource("SphereMesh_cluc0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Sun"]
+transform = Transform3D(1, 0, 0, 0, 0.0436542, 0.999047, 0, -0.999047, 0.0436542, 0, 0, 0)
+
+[node name="Moon" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.09295, 0)
+mesh = SubResource("SphereMesh_cluc0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Moon"]
+transform = Transform3D(1, 0, 0, 0, 0.203505, -0.979074, 0, 0.979074, 0.203505, 0, 0, 0)
