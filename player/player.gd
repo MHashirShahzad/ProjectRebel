@@ -60,15 +60,26 @@ func _physics_process(delta: float) -> void:
 	update_animation()
 
 func can_flip_sprite(factor) -> bool:
-	if sprite_3d.flip_h == true:
+	# factor = wish direction
+	if sprite_3d.rotation_degrees.y == 180:
 		if factor.x < 0: # if sprite is flipped 
-			sprite_3d.flip_h = false
+			sprite_3d.rotation_degrees.y = 0
 			return true
 	else:
 		if factor.x > 0:
-			sprite_3d.flip_h = true
+			sprite_3d.rotation_degrees.y = 180
 			return true
 	return false
+	
+	#if sprite_3d.flip_h == true:
+		#if factor.x < 0: # if sprite is flipped 
+			#sprite_3d.flip_h = false
+			#return true
+	#else:
+		#if factor.x > 0:
+			#sprite_3d.flip_h = true
+			#return true
+	#return false
 	
 func move():
 	wish_dir = Input.get_vector("left", "right", "forward", "backward")
@@ -113,7 +124,7 @@ func update_state():
 	printraw("\rState: ", current_state)
 	
 func ground_state(vel_round : Vector3):
-	if current_state == STATE.JUMP_ANTICIPATION:
+	if current_state == STATE.JUMP_ANTICIPATION: # if anticipating for jump
 		return
 	if current_state == STATE.DASHING:
 		can_flip_sprite(vel_round)

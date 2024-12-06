@@ -1,12 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=14 format=3 uid="uid://bm1476k0oh3bp"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
 [ext_resource type="Texture2D" uid="uid://ra1jpgi8nk4o" path="res://sprites/player/shadow.png" id="3_t5uke"]
-[ext_resource type="Script" path="res://player/shadow.gd" id="4_3b8fb"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tuh0h"]
-size = Vector3(0.089859, 0.178888, 0.0782623)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wv7d6"]
+radius = 0.0549984
+height = 0.179008
 
 [sub_resource type="Animation" id="Animation_n4smm"]
 length = 0.001
@@ -169,10 +169,11 @@ script = ExtResource("1_s7t06")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00502778, -0.0197303, 0.00357819)
-shape = SubResource("BoxShape3D_tuh0h")
+shape = SubResource("CapsuleShape3D_wv7d6")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0, 0)
+layers = 2
 cast_shadow = 2
 shaded = true
 alpha_cut = 3
@@ -181,20 +182,17 @@ texture = ExtResource("2_e4jsu")
 hframes = 16
 vframes = 16
 
+[node name="Decal" type="Decal" parent="Sprite3D"]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, -0.005, 0, 0)
+size = Vector3(0.197968, 0.17395, 3.62769)
+texture_albedo = ExtResource("3_t5uke")
+modulate = Color(0, 0, 0, 0.643137)
+upper_fade = 0.0
+lower_fade = 0.0
+cull_mask = 1048573
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3oe43")
 }
 autoplay = "idle"
-
-[node name="ShadowCast" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.109094, 0)
-
-[node name="Shadow" type="Sprite3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 0, -0.0982182, 0)
-visible = false
-modulate = Color(100, 0, 100, 1)
-shaded = true
-texture_filter = 0
-texture = ExtResource("3_t5uke")
-script = ExtResource("4_3b8fb")

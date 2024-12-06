@@ -1,5 +1,6 @@
-extends Sprite3D
+extends Node3D
 
+@onready var decal: Decal = $"."
 @onready var shadow_cast: RayCast3D = $"../ShadowCast"
 @onready var player: Player3D = $".."
 
