@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=25 format=3 uid="uid://d35kvypxsr362"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
 [ext_resource type="Texture2D" uid="uid://ra1jpgi8nk4o" path="res://sprites/player/shadow.png" id="3_t5uke"]
+[ext_resource type="Script" path="res://player/state_mgr.gd" id="4_wfgxb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wv7d6"]
 radius = 0.0549984
@@ -147,7 +148,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
+"update": 1,
 "values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
 }
 
@@ -163,6 +164,52 @@ _data = {
 "walking": SubResource("Animation_c52lh")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p8cox"]
+animation = &"falling"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_406xi"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uf54c"]
+animation = &"jumping"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m3bl3"]
+animation = &"dash"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jbn7n"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_knsjj"]
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c1wyv"]
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e2td2"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_m0r7g"]
+states/Start/position = Vector2(161, 89)
+states/falling/node = SubResource("AnimationNodeAnimation_p8cox")
+states/falling/position = Vector2(775, -60)
+states/idle/node = SubResource("AnimationNodeAnimation_406xi")
+states/idle/position = Vector2(469, 107)
+states/jumping/node = SubResource("AnimationNodeAnimation_uf54c")
+states/jumping/position = Vector2(579, -99)
+states/walking/node = SubResource("AnimationNodeAnimation_m3bl3")
+states/walking/position = Vector2(532, 230)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_jbn7n"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_knsjj"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_c1wyv"), "idle", "End", SubResource("AnimationNodeStateMachineTransition_e2td2")]
+graph_offset = Vector2(-28, 32)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4o12y"]
+graph_offset = Vector2(-397.655, 166.316)
+nodes/Locomotion/node = SubResource("AnimationNodeStateMachine_m0r7g")
+nodes/Locomotion/position = Vector2(-20, 140)
+node_connections = [&"output", 0, &"Locomotion"]
+
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
@@ -170,6 +217,13 @@ script = ExtResource("1_s7t06")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00502778, -0.0197303, 0.00357819)
 shape = SubResource("CapsuleShape3D_wv7d6")
+
+[node name="Decal" type="Decal" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -0.5, 4.37114e-08, 0, -4.37114e-08, -0.5, 0, -0.223315, -1.95228e-08)
+size = Vector3(0.197968, 0.521268, 0.199891)
+texture_albedo = ExtResource("3_t5uke")
+modulate = Color(0, 0, 0, 0.52549)
+cull_mask = 1048573
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0, 0)
@@ -182,17 +236,17 @@ texture = ExtResource("2_e4jsu")
 hframes = 16
 vframes = 16
 
-[node name="Decal" type="Decal" parent="Sprite3D"]
-transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, -0.005, 0, 0)
-size = Vector3(0.197968, 0.17395, 3.62769)
-texture_albedo = ExtResource("3_t5uke")
-modulate = Color(0, 0, 0, 0.643137)
-upper_fade = 0.0
-lower_fade = 0.0
-cull_mask = 1048573
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3oe43")
 }
 autoplay = "idle"
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeBlendTree_4o12y")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Locomotion/conditions/is_idle = false
+parameters/Locomotion/conditions/is_walking = true
+
+[node name="State_Mgr" type="Node3D" parent="."]
+script = ExtResource("4_wfgxb")

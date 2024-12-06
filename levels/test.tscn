@@ -1,7 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=24 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://levels/test.gd" id="1_5j2bp"]
-[ext_resource type="PackedScene" uid="uid://bm1476k0oh3bp" path="res://player/player.tscn" id="1_nef48"]
+[ext_resource type="PackedScene" uid="uid://d35kvypxsr362" path="res://player/player.tscn" id="1_nef48"]
 [ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="2_0ubtc"]
 [ext_resource type="Shader" path="res://levels/stylzied_sky.gdshader" id="2_y40r0"]
 [ext_resource type="PackedScene" uid="uid://dmwn08fyajopo" path="res://hanging_pole/hanging_pole.gltf" id="5_we2uw"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://b4oem2aguvonn" path="res://props/grass/Grass.tscn" id="10_8j33q"]
 [ext_resource type="PackedScene" uid="uid://csvfnyjxb3y6x" path="res://water/waterplane.tscn" id="12_4u8nu"]
 [ext_resource type="PackedScene" uid="uid://b6cxf4wfyee07" path="res://water/water.tscn" id="13_f10ba"]
+[ext_resource type="Texture2D" uid="uid://dvgykydwu0m0s" path="res://sprites/png/base_human.png" id="13_niq7t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a2gqd"]
 shader = ExtResource("2_y40r0")
@@ -130,9 +131,9 @@ use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.871, 1.24124, -2.56712)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.9028, 3.91744, -2.44753)
 use_collision = true
-size = Vector3(3.11047, 1, 2.77251)
+size = Vector3(7.01764, 6.64258, 2.77251)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="Level"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.90536, 1.24124, -28.8216)
@@ -155,7 +156,7 @@ use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
 [node name="Player" parent="Level" instance=ExtResource("1_nef48")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 37.5891, 1.20228, -9.75093)
+transform = Transform3D(9.99999, 0.0021768, -0.0151008, -0.00219292, 9.99999, -0.0107679, 0.0150985, 0.0107712, 9.99998, 37.5891, 4.54634, -9.75093)
 
 [node name="Camera" parent="Level" node_paths=PackedStringArray("players") instance=ExtResource("2_0ubtc")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.8615, 4.8328, 4.82417)
@@ -195,6 +196,13 @@ transform = Transform3D(0.234633, 0, 0.972084, 0, 1, 0, -0.972084, 0, 0.234633, 
 
 [node name="Waterplane" parent="." instance=ExtResource("12_4u8nu")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -1.20379, 1.43888, 4.76154)
+
+[node name="Decal" type="Decal" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -0.5, 4.37114e-08, 0, -4.37114e-08, -0.5, 19.28, 0.712312, 0)
+texture_albedo = ExtResource("13_niq7t")
+upper_fade = 0.0
+lower_fade = 0.0
+cull_mask = 1048573
 
 [editable path="Level/Grass"]
 [editable path="Level/Grass/grass"]
