@@ -33,13 +33,12 @@ func _ready() -> void:
 	
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("dash"):
-			
+		
 		if wish_dir == Vector2.ZERO:
 			return
 		self.velocity.x = wish_dir.x * dash_velocity
 		self.velocity.z = wish_dir.y * dash_velocity
 		
-		await ani_player.animation_finished
 		
 	if Input.is_action_pressed("ui_accept") and is_on_floor():
 		jump()

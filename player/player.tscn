@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://d35kvypxsr362"]
+[gd_scene load_steps=28 format=3 uid="uid://d35kvypxsr362"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
@@ -55,7 +55,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_4vw06"]
 resource_name = "falling"
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -105,7 +104,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_r8rgp"]
 resource_name = "jumping"
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -117,6 +115,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2i(2, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_nrwxc"]
+resource_name = "poyo"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_s4vp7"]
@@ -152,22 +166,6 @@ tracks/0/keys = {
 "values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_nrwxc"]
-resource_name = "poyo"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2i(0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3oe43"]
 _data = {
 "RESET": SubResource("Animation_n4smm"),
@@ -181,13 +179,13 @@ _data = {
 "walking": SubResource("Animation_c52lh")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p8cox"]
-animation = &"falling"
-
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p4q4c"]
 animation = &"idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uf54c"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ttm5n"]
+animation = &"jump_anticipation"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c3m8h"]
 animation = &"jumping"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_51mjb"]
@@ -204,21 +202,33 @@ advance_condition = &"is_walking"
 advance_mode = 2
 advance_condition = &"is_idle"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3qaqu"]
+advance_mode = 2
+advance_condition = &"is_jumping"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7l7yx"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1f0hx"]
+advance_mode = 2
+advance_condition = &"is_on_ground"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_m0r7g"]
-states/Start/position = Vector2(140, 89)
-states/falling/node = SubResource("AnimationNodeAnimation_p8cox")
-states/falling/position = Vector2(775, -60)
+states/Start/position = Vector2(118, 35)
 states/idle/node = SubResource("AnimationNodeAnimation_p4q4c")
-states/idle/position = Vector2(487, 117)
-states/jumping/node = SubResource("AnimationNodeAnimation_uf54c")
-states/jumping/position = Vector2(579, -99)
+states/idle/position = Vector2(285, 35)
+states/jump_anticipation/node = SubResource("AnimationNodeAnimation_ttm5n")
+states/jump_anticipation/position = Vector2(475, -66)
+states/jumping/node = SubResource("AnimationNodeAnimation_c3m8h")
+states/jumping/position = Vector2(674, -66)
 states/walking/node = SubResource("AnimationNodeAnimation_51mjb")
-states/walking/position = Vector2(450, 321)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p6c44"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_jldsv"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_xp8ua")]
-graph_offset = Vector2(-69, -2)
+states/walking/position = Vector2(351, 237)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p6c44"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_jldsv"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_xp8ua"), "idle", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_3qaqu"), "jump_anticipation", "jumping", SubResource("AnimationNodeStateMachineTransition_7l7yx"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_1f0hx")]
+graph_offset = Vector2(-45, -74)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4o12y"]
-graph_offset = Vector2(-359, 83)
+graph_offset = Vector2(-388.832, 0.0355225)
 nodes/Locomotion/node = SubResource("AnimationNodeStateMachine_m0r7g")
 nodes/Locomotion/position = Vector2(-20, 140)
 node_connections = [&"output", 0, &"Locomotion"]
@@ -255,11 +265,13 @@ libraries = {
 }
 
 [node name="State_Mgr" type="Node3D" parent="."]
-script = ExtResource("4_wfgxb")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 deterministic = false
 tree_root = SubResource("AnimationNodeBlendTree_4o12y")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Locomotion/conditions/is_idle = false
+parameters/Locomotion/conditions/is_jumping = false
+parameters/Locomotion/conditions/is_on_ground = false
 parameters/Locomotion/conditions/is_walking = false
+script = ExtResource("4_wfgxb")
