@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ProjectRebel"
-run/main_scene="res://levels/test.tscn"
+run/main_scene="res://level_and_stuff/levels/test.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://sprites/icon.svg"
 
@@ -23,12 +23,18 @@ enabled=PackedStringArray("res://addons/Asset_Drawer/plugin.cfg", "res://addons/
 
 folder_colors={
 "res://addons/": "gray",
-"res://blend/": "orange",
+"res://assets/": "teal",
+"res://assets/blend/": "orange",
+"res://assets/sprites/": "green",
 "res://camera/": "yellow",
-"res://levels/": "purple",
-"res://player/": "red",
-"res://sky/": "blue",
-"res://sprites/": "green"
+"res://level_and_stuff/": "purple",
+"res://level_and_stuff/levels/": "orange",
+"res://level_and_stuff/props/": "pink",
+"res://level_and_stuff/props/grass/": "green",
+"res://level_and_stuff/props/sky/": "teal",
+"res://level_and_stuff/props/water/": "blue",
+"res://master_char/": "pink",
+"res://player/": "red"
 }
 
 [global_group]

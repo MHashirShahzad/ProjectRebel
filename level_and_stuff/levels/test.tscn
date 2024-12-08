@@ -1,0 +1,534 @@
+[gd_scene load_steps=23 format=3 uid="uid://8wwentc654p3"]
+
+[ext_resource type="Script" path="res://level_and_stuff/levels/test.gd" id="1_s0uvb"]
+[ext_resource type="Shader" path="res://level_and_stuff/props/sky/stylzied_sky.gdshader" id="2_bohi7"]
+[ext_resource type="PackedScene" uid="uid://dflm2k2u8b5mu" path="res://level_and_stuff/props/sky/clouds/clouds_shadowless.tscn" id="3_7sfil"]
+[ext_resource type="Shader" path="res://level_and_stuff/props/sky/clouds/clouds.gdshader" id="4_111rd"]
+[ext_resource type="PackedScene" uid="uid://d35kvypxsr362" path="res://player/player.tscn" id="5_x50ux"]
+[ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="6_353h1"]
+[ext_resource type="Texture2D" uid="uid://owgspjnd5udw" path="res://assets/sprites/png/hanging_pole.png" id="7_2ood8"]
+[ext_resource type="PackedScene" uid="uid://b4oem2aguvonn" path="res://level_and_stuff/props/grass/Grass.tscn" id="8_pw4m2"]
+[ext_resource type="PackedScene" uid="uid://b6cxf4wfyee07" path="res://level_and_stuff/props/water/water.tscn" id="9_7ok4x"]
+[ext_resource type="PackedScene" uid="uid://csvfnyjxb3y6x" path="res://level_and_stuff/props/water/waterplane.tscn" id="10_5utms"]
+[ext_resource type="Texture2D" uid="uid://dvgykydwu0m0s" path="res://assets/sprites/png/base_human.png" id="11_kr780"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a2gqd"]
+shader = ExtResource("2_bohi7")
+shader_parameter/clouds_samples = 16
+shader_parameter/shadow_sample = 4
+shader_parameter/clouds_density = 0.5
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_smoothness = 0.035
+shader_parameter/clouds_light_color = null
+shader_parameter/clouds_shadow_intensity = 1.0
+shader_parameter/high_clouds_density = 0.0
+shader_parameter/top_color = Color(0.34902, 0.588235, 1, 1)
+shader_parameter/bottom_color = Color(0, 0.329412, 0.968627, 1)
+shader_parameter/sun_scatter = Color(0.298039, 0.298039, 0.298039, 1)
+shader_parameter/astro_tint = Color(0, 0, 0, 1)
+shader_parameter/astro_scale = 1.0
+shader_parameter/astro_intensity = 1.0
+shader_parameter/stars_intensity = 0.0
+shader_parameter/shooting_stars_intensity = 0.0
+shader_parameter/shooting_star_tint = null
+
+[sub_resource type="Sky" id="Sky_4rrej"]
+sky_material = SubResource("ShaderMaterial_a2gqd")
+
+[sub_resource type="Environment" id="Environment_25t8a"]
+background_mode = 2
+sky = SubResource("Sky_4rrej")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.31
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_exposure = 1.23
+sdfgi_use_occlusion = true
+glow_enabled = true
+glow_bloom = 0.05
+volumetric_fog_anisotropy = 0.7
+volumetric_fog_length = 4.0
+adjustment_contrast = 1.3
+adjustment_saturation = 1.48
+
+[sub_resource type="Gradient" id="Gradient_emp8x"]
+offsets = PackedFloat32Array(0.52649, 0.993378)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jy2wa"]
+frequency = 0.0154
+fractal_weighted_strength = 0.02
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5qba4"]
+invert = true
+seamless = true
+color_ramp = SubResource("Gradient_emp8x")
+noise = SubResource("FastNoiseLite_jy2wa")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dwytk"]
+render_priority = 0
+shader = ExtResource("4_111rd")
+shader_parameter/isSoft = true
+shader_parameter/speed = 0.005
+shader_parameter/brightness = 0.1
+shader_parameter/threshold = 0.613
+shader_parameter/fluffiness = 0.1
+shader_parameter/noiseTexture = SubResource("NoiseTexture2D_5qba4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7vhhr"]
+albedo_color = Color(0.188235, 0.231373, 0.0627451, 1)
+
+[sub_resource type="Shader" id="Shader_ni0g8"]
+code = "shader_type spatial;
+render_mode unshaded, depth_prepass_alpha;
+
+/** Ignore transparent pixels with alpha below this value for extrusion */
+uniform float extruded_alpha_cull : hint_range(0.0, 1.0) = 1.0;
+/** If transparent pixels are extruded, this makes extruded pixels opaque */
+uniform bool opaque_extrude = true;
+/** Keeps original image on front and back of cube
+ * Unaffected by most other parameters */
+
+uniform bool keep_image = true;
+/** Removes transparent pixels with alpha below this value on original image */
+uniform float image_alpha_cull : hint_range(0.0, 1.0) = 1.0;
+/** Offset extruded portion by this vector */
+uniform vec2 offset = vec2(0.0);
+/** Color which will be mixed with extruded portion */
+uniform vec4 color_mix : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+/** 0 is no color mix, 1 is solid color */
+uniform float mix_strength : hint_range(0.0, 1.0) = 0.0;
+/** 2D image where opaque pixels are extruded
+ * Edges of cube ends up having artifact lines when texture uses mipmaps, so the texture is currently set to automatically filter with nearest, though linear will work as well.
+ */
+uniform sampler2D Texture : source_color, filter_nearest;
+/** Amount of times each pixel refers to the original image in order to calculate whether it is part of an extruded section.
+ * Ideally as low as possible, as higher numbers cause lag.
+ * However, too low and extrusion will have errors, with wrong colors as extrusions sample from incorrect parts of the image (not an issue if you replace the color!) and thinner sections not extruding at all, so must find ideal texture calls per use case. If you will be looking closely at the model, higher texture calls make sense, but if you will not be looking closely or generating a ton of models, then low texture calls is better for performance.
+ */
+uniform int texture_calls = 20;
+/** Ray bias value shifts intersecton checks to try to avoid checking empty sides, with higher values searching further from edge.
+ * Only useful to change at extremely low texture calls to reduce extrusion errors if trying to min-max performance.
+ * Extrusions are found by checking evenly along the image from the pixel to edge of image. But if your image is mostly solid at the center, then by shifting intersection checks to mostly skip edge checks, we can reduce wasted texture calls on empty sections.
+ */
+uniform float ray_bias = 1;
+/** Allows hollow regions in texture to extrude infinitely for double the performance on front and back faces.
+ * If your model has no significant hollow areas, it makes sense to enable infinite holes for performance.
+ * When a pixel is found to be part of an extrusion, calculations need to be repeated again to find where exactly extrusion ends by checking the opposite face of the cube.
+ */
+uniform bool infinite_holes = false;
+/** Parameters to change if your texture is a spritesheet */
+uniform int Hframes = 1;
+/** Parameters to change if your texture is a spritesheet */
+uniform int Vframes = 1;
+/** Parameters to change if your texture is a spritesheet */
+uniform int frame = 0;
+
+struct imgPoint {
+	vec4 color;
+	vec2 uv;
+};
+
+bool isInImg(vec2 uv){
+	return 	uv.x >= 0.0 && uv.y >= 0.0 && uv.x <= 1.0 && uv.y <= 1.0;
+}
+
+vec2 getPositionAlongTheLine(vec2 a, vec2 b, float percentage) {
+    return vec2(a.x * (1.0 - percentage) + b.x * percentage, a.y * (1.0 - percentage) + b.y * percentage);
+}
+
+vec2 lineImgIntersect(vec2 x, vec2 y){
+	float t = 0.0;
+	float xY = y.x;
+	float yY = -y.y;
+	float xX = x.x;
+	float yX = -x.y;
+	float xA = 0.0;
+	float yA = -1.0;
+	float xC = 1.0;
+	float yC = -0.0;
+	if(xY == xX) {
+		t =  max((yA - yX)/(yY - yX), (yC - yX)/(yY - yX));
+	} else {
+		if(yY == yX) {
+			t = max((xA - xX)/(xY - xX), (xC - xX)/(xY - xX));
+		} else {
+			if(xY > xX) {
+				if(yY > yX) {
+					t = min((xC - xX)/(xY - xX), (yC - yX)/(yY - yX));
+				} else {
+					t = min((xC - xX)/(xY - xX), (yA - yX)/(yY - yX));
+				}
+			} else {
+				if(yY > yX) {
+					t = min((xA - xX)/(xY - xX), (yC - yX)/(yY - yX));
+				} else {
+					t = min((xA - xX)/(xY - xX), (yA - yX)/(yY - yX));
+				}
+			}
+		}
+	}
+	float xE = t * xY + (1.0 - t) * xX;
+	float yE = t * yY + (1.0 - t) * yX;
+	return vec2(xE, -yE);
+}
+
+vec2 frameUV(vec2 uv){
+	int hFrame = frame % Hframes;
+	int vFrame = frame / Vframes;
+	uv.x = uv.x/float(Hframes) + float(hFrame)/float(Hframes);
+	uv.y = uv.y/float(Vframes) + float(vFrame)/float(Vframes);
+	return uv;
+}
+
+vec2 flippedFrameUV(vec2 uv){
+	float frameCenter = 0.5/float(Hframes) + float(frame % Hframes)/float(Hframes);
+	uv = frameUV(uv);
+	uv.x = -(uv.x - frameCenter) + frameCenter;
+	return uv;
+}
+
+// Return colored pixel found starting from UV with given slope
+imgPoint imgExtrude(vec2 pos_on_img, vec2 slope, bool flipped){
+	vec4 color;
+	// Flip y as UV has inverted y axis
+	slope.y *= -1.0;
+	// Find intersect with image edge
+	vec2 edge = lineImgIntersect(pos_on_img, pos_on_img + slope);
+	if (flipped) {
+		pos_on_img = flippedFrameUV(pos_on_img);
+		edge = flippedFrameUV(edge);
+	} else {
+		pos_on_img = frameUV(pos_on_img);
+		edge = frameUV(edge);
+	}
+	bool extrude = false;
+	vec2 point;
+	int calls = texture_calls;
+	float log_dir = -1.0;
+	float log_percentage;
+	for (int i = 0; i < calls; i++){
+		if (!extrude) {
+			float percentage = float(i) * 1.0/float(texture_calls);
+			percentage = pow(percentage, ray_bias);
+			point = getPositionAlongTheLine(pos_on_img, edge, percentage);
+			color = texture(Texture, point + offset);
+			if (color.w >= extruded_alpha_cull) {
+				extrude = true;
+				//first checked pixel is img, cannot really tell where edge is
+				if (i == 0) break;
+				calls - i;
+				i = 0;
+				log_percentage = percentage;
+			}
+		//use remaining texture() budget to fine tune edge search
+		} else {
+			float incremenet = log_dir * 1.0/(float(texture_calls)*float(i*2));
+			log_percentage += incremenet;
+			vec2 check_point = getPositionAlongTheLine(pos_on_img, edge, log_percentage);
+			vec4 check_color = texture(Texture, check_point + offset);
+			if (check_color.w >= extruded_alpha_cull) {
+				color = check_color;
+				point = check_point;
+				log_dir = -1.0;
+			} else log_dir = 1.0;
+		}
+	}
+	if (extrude) {
+		if (opaque_extrude) color.w = 1.0;
+		color = mix(color, color_mix, mix_strength);
+		if (infinite_holes) return imgPoint(color, pos_on_img);
+		return imgPoint(color, point);
+	}
+	return imgPoint(vec4(0.0), edge);
+}
+
+vec2 UVtoXY(vec2 uv){
+	vec2 xy = uv * 2.0 - vec2(1.0);
+	xy.y *= -1.0;
+	return xy;
+}
+vec2 XYtoUV(vec2 xy){
+	vec2 uv = (xy + vec2(1.0)) / 2.0;
+	uv.y *= -1.0;
+	return uv;
+}
+
+vec3 PlaneLineIntersection(vec3 plane_point, vec3 plane_normal, vec3 line_point, vec3 line_dir){
+	float t = (dot(plane_normal, plane_point) - dot(plane_normal, line_point)) / (dot(plane_normal, normalize(line_dir)));
+	return line_point + normalize(line_dir) * t;
+}
+
+void fragment() {
+	// Get fragment position in world space coordinates
+	vec3 frag_pos = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	// Get the camera direction by sustracting the camera position from the fragment position
+	vec3 camera_ray = normalize(frag_pos - CAMERA_POSITION_WORLD);
+	// Get transformed camera ray to handle rotation and scaling
+	vec3 model_ray = normalize((inverse(MODEL_MATRIX) * vec4(camera_ray, 0.0)).xyz);
+
+	// Determine which face of the cube we are looking at
+	ivec2 face = ivec2(UV / vec2(1.0/3.0, 1.0/2.0));
+	// Make each face have similar UV
+	vec2 adjusted_UV = mod(UV,vec2(1.0/3.0, 1.0/2.0)) * vec2(3.0, 2.0);
+
+	// Z
+	if (face.x == 0 && face.y == 0) {
+		// No need to extrude if already on colored pixel
+		vec4 color = texture(Texture, frameUV(adjusted_UV));
+		if (color.w >= image_alpha_cull && keep_image) {
+			ALBEDO = color.rgb;
+			ALPHA = color.w;
+		// Extrude
+		} else {
+			// From pixel cast ray from focal point to see if it collides with opaque pixel
+			// If it collides, color the pixel with collided color
+			imgPoint first_pixel = imgExtrude(adjusted_UV, model_ray.xy, false);
+			ALBEDO = first_pixel.color.rgb;
+			ALPHA = first_pixel.color.w;
+			// Cap extruded end so it doesn't extrude infinitely
+			// Does so by casting ray in opposite direction in order to find position of second collision
+			vec3 point = vec3(UVtoXY(adjusted_UV),2.0);
+			vec3 ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, model_ray);
+			vec2 uv_point = XYtoUV(ray_intersection.xy) + vec2(0.0,1.0);
+			if (isInImg(uv_point)) {
+				imgPoint second_pixel = imgExtrude(uv_point, -model_ray.xy, false);
+				// If second raycast does not hit same texture on backface, then that pixel is clear
+				if (model_ray.y <= 0.0 && second_pixel.uv.y < first_pixel.uv.y ) ALPHA = 0.0;
+				else if (model_ray.y > 0.0 && second_pixel.uv.y > first_pixel.uv.y ) ALPHA = 0.0;
+			}
+		}
+	}
+	// -Z
+	else if (face.x == 2 && face.y == 0) {
+		// Back face has to be flipped in order to line up with front face
+		vec4 color = texture(Texture, flippedFrameUV(adjusted_UV));
+		if (color.w >= image_alpha_cull && keep_image) {
+			ALBEDO = color.rgb;
+			ALPHA = color.w;
+		} else {
+			imgPoint first_pixel = imgExtrude(adjusted_UV, vec2(-model_ray.x, model_ray.y), true);
+			ALBEDO = first_pixel.color.rgb;
+			ALPHA = first_pixel.color.w;
+
+			vec3 point = vec3(UVtoXY(vec2(-adjusted_UV.x, adjusted_UV.y)),-2.0);
+			vec3 ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, model_ray);
+			vec2 uv_point = XYtoUV(ray_intersection.xy) + vec2(1.0,1.0);
+			if (isInImg(uv_point)) {
+				imgPoint second_pixel = imgExtrude(uv_point, -model_ray.xy, false);
+				if (model_ray.y <= 0.0 && second_pixel.uv.y < first_pixel.uv.y ) ALPHA = 0.0;
+				else if (model_ray.y > 0.0 && second_pixel.uv.y > first_pixel.uv.y ) ALPHA = 0.0;
+			}
+		}
+	}
+	// X
+	else if (face.x == 1 && face.y == 0) {
+		// Convert pixel position on side of cube as if it is actually on same plane as texture on front of cube
+		vec3 point = vec3(0.0, UVtoXY(adjusted_UV).yx);
+		vec3 ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, -model_ray);
+		vec3 image_intersection = PlaneLineIntersection(vec3(0.0), vec3(1.0,0.0,0.0), ray_intersection, vec3(model_ray.xy, 0.0));
+		vec2 new_uv = XYtoUV(image_intersection.xy) + vec2(0.5, 1.0);
+		vec4 img_color = imgExtrude(new_uv, model_ray.xy, false).color;
+		ALBEDO = img_color.rgb;
+		ALPHA = img_color.w;
+		// Find pixel position as if it is on front or back face and cast ray in opposite direction
+		vec2 xy = UVtoXY(adjusted_UV);
+		if (model_ray.z > 0.0) point = vec3(1.0, xy.y, -1.0 - xy.x);
+		else point = vec3(1.0, xy.y, 1.0 - xy.x);
+		ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, model_ray);
+		vec2 uv_point = XYtoUV(ray_intersection.xy) + vec2(0,1.0);
+		if (isInImg(uv_point)) {
+			// If ray collides with nothing then there can't be extrusion there
+			vec4 img_color = imgExtrude(uv_point, -model_ray.xy, false).color;
+			if (img_color.w == 0.0) ALPHA = 0.0;
+		}
+	}
+	// -X
+	else if (face.x == 0 && face.y == 1) {
+		vec3 point = vec3(0.0, UVtoXY(adjusted_UV).yx);
+		vec3 ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, -model_ray);
+		vec3 image_intersection = PlaneLineIntersection(vec3(0.0), vec3(-1.0,0.0,0.0), ray_intersection, vec3(model_ray.xy, 0.0));
+		vec2 new_uv = XYtoUV(image_intersection.xy) + vec2(-0.5, 1.0);
+		vec4 img_color = imgExtrude(new_uv, model_ray.xy, false).color;
+		ALBEDO = img_color.rgb;
+		ALPHA = img_color.w;
+
+		vec2 xy = UVtoXY(adjusted_UV);
+		if (model_ray.z > 0.0) point = vec3(-1.0, xy.y, -1.0 + xy.x);
+		else point = vec3(-1.0, xy.y, 1.0 + xy.x);
+		ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, model_ray);
+		vec2 uv_point = XYtoUV(ray_intersection.xy) + vec2(0.0,1.0);
+		if (isInImg(uv_point)) {
+			vec4 img_color = imgExtrude(uv_point, -model_ray.xy, false).color;
+			if (img_color.w == 0.0) ALPHA = 0.0;
+		}
+	}
+	// Y
+	else if (face.x == 1 && face.y == 1) {
+		vec2 rotated_UV = -UVtoXY(adjusted_UV);
+		vec3 point = vec3(rotated_UV.x, 0.0, rotated_UV.y);
+		vec3 ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, -model_ray);
+		vec3 image_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,1.0,0.0), ray_intersection, vec3(model_ray.xy, 0.0));
+		vec2 new_uv = XYtoUV(image_intersection.xy) + vec2(0.0,0.5);
+		vec4 img_color = imgExtrude(new_uv, model_ray.xy, false).color;
+		ALBEDO = img_color.rgb;
+		ALPHA = img_color.w;
+
+		vec2 xy = UVtoXY(vec2(-adjusted_UV.x, adjusted_UV.y));
+		if (model_ray.z > 0.0) point = vec3(xy.x, 1.0, xy.y - 1.0);
+		else point = vec3(xy.x, 1.0, xy.y + 1.0);
+		ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, model_ray);
+		vec2 uv_point = XYtoUV(ray_intersection.xy) + vec2(1.0,1.0);
+		if (isInImg(uv_point)) {
+			vec4 img_color = imgExtrude(uv_point, -model_ray.xy, false).color;
+			if (img_color.w == 0.0) ALPHA = 0.0;
+		}
+	}
+	// -Y
+	else if (face.x == 2 && face.y == 1) {
+		vec2 XY = UVtoXY(adjusted_UV);
+		vec3 point = vec3(XY.x, 0.0, XY.y);
+		vec3 ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, -model_ray);
+		vec3 image_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,-1.0,0.0), ray_intersection, vec3(model_ray.xy, 0.0));
+		vec2 new_uv = XYtoUV(image_intersection.xy);
+		new_uv += vec2(0.0, 1.5);
+		vec4 img_color = imgExtrude(new_uv, model_ray.xy, false).color;
+		ALBEDO = img_color.rgb;
+		ALPHA = img_color.w;
+
+		vec2 xy = UVtoXY(adjusted_UV);
+		if (model_ray.z > 0.0) point = vec3(xy.x, -1.0, xy.y - 1.0);
+		else point = vec3(xy.x, -1.0, xy.y + 1.0);
+		ray_intersection = PlaneLineIntersection(vec3(0.0), vec3(0.0,0.0,1.0), point, model_ray);
+		vec2 uv_point = XYtoUV(ray_intersection.xy) + vec2(0.0,1.0);
+		if (isInImg(uv_point)) {
+			vec4 img_color = imgExtrude(uv_point, -model_ray.xy, false).color;
+			if (img_color.w == 0.0) ALPHA = 0.0;
+		}
+	}
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnnen"]
+render_priority = 0
+shader = SubResource("Shader_ni0g8")
+shader_parameter/extruded_alpha_cull = 1.0
+shader_parameter/opaque_extrude = true
+shader_parameter/keep_image = true
+shader_parameter/image_alpha_cull = 1.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/color_mix = Color(0, 0, 0, 1)
+shader_parameter/mix_strength = 0.0
+shader_parameter/texture_calls = 20
+shader_parameter/ray_bias = 1.0
+shader_parameter/infinite_holes = false
+shader_parameter/Hframes = 1
+shader_parameter/Vframes = 1
+shader_parameter/frame = 0
+shader_parameter/Texture = ExtResource("7_2ood8")
+
+[sub_resource type="BoxMesh" id="BoxMesh_bxvux"]
+
+[node name="Test" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
+script = ExtResource("1_s0uvb")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_25t8a")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.869533, -0.210669, 0.446689, 0.493018, -0.423533, 0.75997, 0.0290832, 0.881044, 0.472139, 0, 0, 0)
+light_color = Color(1, 1, 0.894118, 1)
+shadow_enabled = true
+shadow_blur = 1.587
+
+[node name="Clouds" parent="." instance=ExtResource("3_7sfil")]
+transform = Transform3D(279.518, 0, 0, 0, 1, 0, 0, 0, 238.198, 0.139587, 62.1593, 20.7271)
+material_override = SubResource("ShaderMaterial_dwytk")
+
+[node name="Level" type="Node" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, -3.8147e-06, 8.46502)
+material_override = SubResource("StandardMaterial3D_7vhhr")
+use_collision = true
+size = Vector3(212.466, 1, 130.33)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41067, 1.24124, -2.56712)
+use_collision = true
+size = Vector3(3.11047, 1, 2.77251)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.9028, 3.91744, -2.44753)
+use_collision = true
+size = Vector3(7.01764, 6.64258, 2.77251)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.90536, 1.24124, -28.8216)
+use_collision = true
+size = Vector3(3.11047, 1, 2.77251)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Level"]
+transform = Transform3D(0.565053, -0.825054, 0, 0.825054, 0.565053, 0, 0, 0, 1, 15.8896, 0.742077, -28.6715)
+use_collision = true
+size = Vector3(3.11047, 1, 2.77251)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Level"]
+transform = Transform3D(0.883643, -0.468161, 0, 0.468161, 0.883643, 0, 0, 0, 1, 22.8481, 1.49108, -28.6715)
+use_collision = true
+size = Vector3(6.31024, 1, 2.77251)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.3808, 1.24124, -28.8201)
+use_collision = true
+size = Vector3(3.11047, 1, 2.77251)
+
+[node name="Player" parent="Level" instance=ExtResource("5_x50ux")]
+transform = Transform3D(9.99999, 0.0021768, -0.0151008, -0.00219292, 9.99999, -0.0107679, 0.0150985, 0.0107712, 9.99998, 37.5891, 4.54634, -9.75093)
+
+[node name="Camera" parent="Level" node_paths=PackedStringArray("players") instance=ExtResource("6_353h1")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.8615, 4.8328, 4.82417)
+players = [NodePath("../Player")]
+angle = -22.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0998, 2.26116, 0.0012207)
+light_color = Color(1, 0, 1, 1)
+omni_range = 7.67659
+
+[node name="Sprite3D" type="Sprite3D" parent="Level"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -14.035, 3.71218, 15.505)
+cast_shadow = 2
+shaded = true
+alpha_cut = 2
+texture_filter = 0
+texture = ExtResource("7_2ood8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 39.0752, 3.05949, 8.40446)
+material_override = SubResource("ShaderMaterial_hnnen")
+mesh = SubResource("BoxMesh_bxvux")
+skeleton = NodePath("../..")
+
+[node name="Grass" parent="Level" instance=ExtResource("8_pw4m2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2811, 1.20131, 48.5522)
+
+[node name="GrassBase" parent="Level/Grass" index="1"]
+cast_shadow = 0
+
+[node name="Water" parent="." instance=ExtResource("9_7ok4x")]
+transform = Transform3D(0.234633, 0, 0.972084, 0, 1, 0, -0.972084, 0, 0.234633, -8.49994, 1.9965, 22.628)
+
+[node name="Waterplane" parent="." instance=ExtResource("10_5utms")]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -1.20379, 1.43888, 4.76154)
+
+[node name="Decal" type="Decal" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -0.5, 4.37114e-08, 0, -4.37114e-08, -0.5, 19.28, 0.712312, 0)
+texture_albedo = ExtResource("11_kr780")
+upper_fade = 0.0
+lower_fade = 0.0
+cull_mask = 1048573
+
+[editable path="Level/Grass"]
+[editable path="Level/Grass/grass"]
