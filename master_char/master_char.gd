@@ -21,6 +21,7 @@ var facing: Vector3:
 var current_state : STATE:
 	get: return current_state
 
+var can_jump : bool = true
 enum STATE{
 	IDLE,
 	WALKING,
@@ -59,9 +60,20 @@ func move():
 		velocity = velocity.lerp(direction.normalized() * speed, acceleration)
 	else:
 		velocity = velocity.lerp(Vector3.ZERO, friction)
+	
+
+	var was_on_floor := is_on_floor()
+	
 	move_and_slide()
 	
+	# Coyote time
+	if was_on_floor and !is_on_floor():
+		can_jump = true
+		await get_tree().create_timer(.2).timeout
+		can_jump = false
+		
 func jump():
+	can_jump = false
 	current_state = STATE.JUMP_ANTICIPATION
 	await ani_player.animation_finished
 	current_state = STATE.JUMPING

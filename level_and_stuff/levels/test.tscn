@@ -485,7 +485,7 @@ use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
 [node name="Player" parent="Level" instance=ExtResource("5_x50ux")]
-transform = Transform3D(9.99999, 0.0021768, -0.0151008, -0.00219292, 9.99999, -0.0107679, 0.0150985, 0.0107712, 9.99998, 37.5891, 4.54634, -9.75093)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 37.5891, 4.54634, -9.75093)
 
 [node name="Camera" parent="Level" node_paths=PackedStringArray("players") instance=ExtResource("6_353h1")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.8615, 4.8328, 4.82417)
@@ -516,6 +516,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2811, 1.20131, 48.5522)
 
 [node name="GrassBase" parent="Level/Grass" index="1"]
 cast_shadow = 0
+
+[node name="grass" parent="Level/Grass" index="2"]
+visible = true
+
+[node name="Grass" parent="Level/Grass/grass" index="0"]
+cast_shadow = 1
 
 [node name="Water" parent="." instance=ExtResource("9_7ok4x")]
 transform = Transform3D(0.234633, 0, 0.972084, 0, 1, 0, -0.972084, 0, 0.234633, -8.49994, 1.9965, 22.628)
