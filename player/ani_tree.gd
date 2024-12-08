@@ -3,8 +3,10 @@ extends AnimationTree
 @onready var anim_tree: AnimationTree = $"."
 @onready var player: Player3D = $".."
 
+
 func _physics_process(delta: float) -> void:
-	update_ani_params()
+	pass
+	#update_ani_params()
 
 func update_ani_params():
 	var vel_round := player.velocity.round()
