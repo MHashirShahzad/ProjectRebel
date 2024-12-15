@@ -10,12 +10,17 @@ class_name Player3D
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("dash"):
 		dash()
-	if Input.is_action_just_pressed("ui_accept") and (can_jump || is_on_floor()):
+	if (
+		Input.is_action_just_pressed("jump") and 
+		jump_count < max_jump_count and
+		(can_jump || is_on_floor())
+	): # is on floor or coyote timer or jump count less thn max jump count
 		jump()
-	
+	if Input.is_action_just_pressed("attack"):
+		attack()
+
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		print("in air")
 		velocity += get_gravity() * delta
 	
 	move()

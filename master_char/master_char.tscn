@@ -254,10 +254,9 @@ states/jumping/position = Vector2(571, -92)
 states/walking/node = SubResource("AnimationNodeAnimation_51mjb")
 states/walking/position = Vector2(495, 163)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p6c44"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_jldsv"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_xp8ua"), "idle", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_3qaqu"), "jump_anticipation", "jumping", SubResource("AnimationNodeStateMachineTransition_7l7yx"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_1f0hx"), "walking", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_mwxaa"), "idle", "dash", SubResource("AnimationNodeStateMachineTransition_h8tfx"), "jumping", "dash", SubResource("AnimationNodeStateMachineTransition_cmyhl"), "dash", "idle", SubResource("AnimationNodeStateMachineTransition_u236e"), "walking", "dash", SubResource("AnimationNodeStateMachineTransition_y0tog")]
-graph_offset = Vector2(-186.707, -274)
+graph_offset = Vector2(-229.707, -212)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4o12y"]
-graph_offset = Vector2(-397, 87)
 nodes/Locomotion/node = SubResource("AnimationNodeStateMachine_m0r7g")
 nodes/Locomotion/position = Vector2(-20, 140)
 node_connections = [&"output", 0, &"Locomotion"]
