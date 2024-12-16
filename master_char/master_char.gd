@@ -3,6 +3,7 @@ class_name MasterCharacter3D
 # <========================== Signals ====================================>
 signal input_enabled
 signal input_disabled
+signal state_changed
 # <========================== Variables ====================================>
 
 # <----------------------- Exports ---------------------->
@@ -25,7 +26,7 @@ var jump_count : int = 0
 var direction : Vector3
 var wish_dir : Vector2
 
-var is_input_enabled : bool = true:
+var is_action_enabled : bool = true:
 	set(value):
 		if value == true:
 			input_enabled.emit
@@ -52,6 +53,8 @@ enum STATE{
 
 # <========================== Functions ========================================>
 
+func _buffered_input(delta: float) -> void:
+	pass
 
 func _input(event: InputEvent) -> void:
 	pass
@@ -59,6 +62,8 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	pass
 	
+func _process(delta: float) -> void:
+	_buffered_input(delta)
 
 func can_turn_around(factor : Vector2) -> bool:
 	if coll_shape.rotation_degrees.y == 180:
@@ -94,6 +99,7 @@ func jump() -> void:
 	jump_count += 1
 	can_jump = false
 	
+	InputBuffer._invalidate_action("jump")
 	# State managing
 	current_state = STATE.JUMP_ANTICIPATION
 	await ani_player.animation_finished
@@ -169,23 +175,25 @@ func dash() -> void:
 	# add downward velocity
 	self.velocity.y = dash_velocity.y
 	
-	
-	is_input_enabled = false
+	# invalidate the buffer
+	InputBuffer._invalidate_action("dash")
+	is_action_enabled = false
 	current_state = STATE.DASHING
 	await ani_tree.animation_finished
 	current_state = STATE.IDLE
-	is_input_enabled = true
+	is_action_enabled = true
 	
 func attack() -> void:
 	if !is_on_floor():
 		return
-		
-	is_input_enabled = false
+	
+	InputBuffer._invalidate_action("attack")
+	is_action_enabled = false
 	current_state = STATE.ATTACKING_1
-	await ani_tree.animation_finished 
+	await ani_tree.animation_finished  # Causes bugs when ani is switched before finishing
 	print("ANi finished")
 	current_state = STATE.IDLE
-	is_input_enabled = true
+	is_action_enabled = true
 
 func just_landed() -> void:
 	jump_count = 0 # reset jumps

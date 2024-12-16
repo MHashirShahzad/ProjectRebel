@@ -7,18 +7,19 @@ class_name Player3D
 # <========================== Functions ========================================>
 
 
-func _input(event: InputEvent) -> void:
-	if !is_input_enabled:
-		return
-	if Input.is_action_just_pressed("dash"):
+func _buffered_input(delta: float) -> void:
+	#if !is_action_enabled:
+		#return
+	if InputBuffer.is_action_press_buffered("dash"):
 		dash()
+		
 	if (
-		Input.is_action_just_pressed("jump") and 
+		InputBuffer.is_action_press_buffered("jump") and 
 		jump_count < max_jump_count and
 		(can_jump || is_on_floor())
 	): # is on floor or coyote timer or jump count less thn max jump count
 		jump()
-	if Input.is_action_just_pressed("attack"):
+	if InputBuffer.is_action_press_buffered("attack"):
 		attack()
 
 func _physics_process(delta: float) -> void:
