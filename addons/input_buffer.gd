@@ -104,20 +104,20 @@ func _invalidate_action(action: String) -> void:
 		if event is InputEventKey:
 			var scancode: int = event.keycode
 			if keyboard_timestamps.has(scancode):
-				print("ACTION REMOVED : ", action)
+				#aaaaaaaprint("ACTION REMOVED : ", action)
 				keyboard_timestamps[scancode] = 0
 		elif event is InputEventJoypadButton:
 			var button_index: int = event.button_index
 			if joypad_timestamps.has(button_index):
-				print("ACTION REMOVED : ", action)
+				#print("ACTION REMOVED : ", action)
 				joypad_timestamps[button_index] = 0
 		elif event is InputEventJoypadMotion:
 			var axis_code: String = str(event.axis) + "_" + str(sign(event.axis_value))
 			if joypad_timestamps.has(axis_code):
-				print("ACTION REMOVED : ", action)
+				#print("ACTION REMOVED : ", action)
 				joypad_timestamps[axis_code] = 0
 		elif event is InputEventMouseButton:
 			var button_index: int = event.button_index
 			if mouse_timestamps.has(button_index):
-				print("ACTION REMOVED : ", action)
+				#print("ACTION REMOVED : ", action)
 				mouse_timestamps[button_index] = 0

@@ -1,9 +1,14 @@
 extends CharacterBody3D
 class_name MasterCharacter3D
 # <========================== Signals ====================================>
+signal state_changed
+
 signal input_enabled
 signal input_disabled
-signal state_changed
+
+signal movement_enabled
+signal movement_disabled
+
 # <========================== Variables ====================================>
 
 # <----------------------- Exports ---------------------->
@@ -18,7 +23,6 @@ signal state_changed
 # <----------------------- Onready ---------------------->
 @onready var sprite_3d: Sprite3D = $CollisionShape3D/Sprite3D
 @onready var ani_player: AnimationPlayer = $AniPlayer
-@onready var ani_tree: AnimationTree = $AnimationTree
 @onready var coll_shape: CollisionShape3D = $CollisionShape3D
 
 # <----------------------- Normal ---------------------->
@@ -32,11 +36,19 @@ var is_action_enabled : bool = true:
 			input_enabled.emit
 		else:
 			input_disabled.emit
+		is_action_enabled = value
+			
+var is_movement_enabled : bool = true:
+	set(value):
+		if value == true:
+			movement_enabled.emit()
+		else:
+			movement_disabled.emit()
+		is_movement_enabled = value
 
 var facing: Vector3:
 	get: return global_transform.basis.z
-var current_state : STATE:
-	get: return current_state
+var current_state : STATE = STATE.IDLE
 
 var can_jump : bool = true
 
@@ -65,7 +77,7 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	_buffered_input(delta)
 
-func can_turn_around(factor : Vector2) -> bool:
+func _can_turn_around(factor : Vector2) -> bool:
 	if coll_shape.rotation_degrees.y == 180:
 		if factor.x < 0: # if player is inputing right 
 			coll_shape.rotation_degrees.y = 0
@@ -76,8 +88,12 @@ func can_turn_around(factor : Vector2) -> bool:
 			return true
 	return false
 	
-func move() -> void:
-	wish_dir = Input.get_vector("left", "right", "forward", "backward")
+func _move() -> void:
+	if is_movement_enabled:
+		wish_dir = Input.get_vector("left", "right", "forward", "backward")
+	else:
+		wish_dir = Vector2.ZERO
+		
 	direction = (global_basis * Vector3(wish_dir.x, 0, wish_dir.y)).normalized()
 	if direction:
 		velocity = velocity.lerp(direction.normalized() * speed, acceleration)
@@ -90,12 +106,12 @@ func move() -> void:
 	move_and_slide()
 	
 	if was_on_floor and !is_on_floor():
-		just_left_ground()
+		_just_left_ground()
 		
 	if is_on_floor() and !was_on_floor:
-		just_landed()
+		_just_landed()
 		
-func jump() -> void:
+func _jump() -> void:
 	jump_count += 1
 	can_jump = false
 	
@@ -107,8 +123,7 @@ func jump() -> void:
 	current_state = STATE.JUMPING
 	velocity.y = jump_velocity
 
-## DEPRECATED
-func update_animation():
+func _update_animation():
 	# if already playing turn around return
 	if ani_player.get_current_animation() == "turn_around":
 		return
@@ -127,42 +142,47 @@ func update_animation():
 			ani_player.play("jumping")
 		STATE.DASHING:
 			ani_player.play("dash")
+		STATE.ATTACKING_1:
+			ani_player.play("attack1")
 	
-func update_state() -> void:
+func _update_state() -> void:
 	var vel_round := velocity.round()
 	if is_on_floor():
-		ground_state(vel_round)
+		_ground_state(vel_round)
 	else:
-		air_state(vel_round)
+		_air_state(vel_round)
 	printraw("\rState: ", current_state)
 	
-func ground_state(vel_round : Vector3) -> void:
+func _ground_state(vel_round : Vector3) -> void:
 	if current_state == STATE.JUMP_ANTICIPATION: #|| current_state == STATE.ATTACKING_1:
 		return
 	if current_state == STATE.DASHING:
-		can_turn_around(Vector2(vel_round.x, vel_round.y)) # if 
+		_can_turn_around(Vector2(vel_round.x, vel_round.y)) # if 
 		return
 	if current_state == STATE.ATTACKING_1:
-		can_turn_around(wish_dir)
+		_can_turn_around(wish_dir)
 		return
 	
-	if can_turn_around(wish_dir):
+	if _can_turn_around(wish_dir):
+		is_action_enabled = false
 		current_state = STATE.TURNING_AROUND
+		await ani_player.animation_finished
+		is_action_enabled = true
 	elif ! is_zero_approx(wish_dir.x)  || ! is_zero_approx(wish_dir.y):
 		current_state = STATE.WALKING
 	else:
 		current_state = STATE.IDLE
 		
-func air_state(vel_round : Vector3) -> void:
+func _air_state(vel_round : Vector3) -> void:
 	if current_state == STATE.DASHING:
 		return
-	can_turn_around(wish_dir)
+	_can_turn_around(wish_dir)
 	if vel_round.y > 1:
 		current_state = STATE.JUMPING
 	elif vel_round.y < -1:
 		current_state = STATE.JUMPING # falling
 
-func dash() -> void:
+func _dash() -> void:
 	if current_state == STATE.DASHING or current_state == STATE.JUMP_ANTICIPATION:
 		return
 		
@@ -179,32 +199,40 @@ func dash() -> void:
 	InputBuffer._invalidate_action("dash")
 	is_action_enabled = false
 	current_state = STATE.DASHING
-	await ani_tree.animation_finished
+	await ani_player.animation_finished
 	current_state = STATE.IDLE
 	is_action_enabled = true
 	
-func attack() -> void:
+func _attack() -> void:
 	if !is_on_floor():
+		return
+	if current_state == STATE.ATTACKING_1:
+		print("Already attackig")
 		return
 	
 	InputBuffer._invalidate_action("attack")
+	
 	is_action_enabled = false
+	print("ACTION: ", is_action_enabled)
 	current_state = STATE.ATTACKING_1
-	await ani_tree.animation_finished  # Causes bugs when ani is switched before finishing
-	print("ANi finished")
+	await ani_player.animation_finished  # Causes bugs when ani is switched before finishind
+	print(ani_player.current_animation)
 	current_state = STATE.IDLE
 	is_action_enabled = true
 
-func just_landed() -> void:
+func _just_landed() -> void:
 	jump_count = 0 # reset jumps
 	if current_state == STATE.DASHING: # wave dash
 		self.velocity = self.velocity * 1.2
 
 ## Also used for coyote timer
-func just_left_ground() -> void:
+func _just_left_ground() -> void:
 	if jump_count != 0:
 		return
 	# Coyote time
 	can_jump = true
 	await get_tree().create_timer(.2).timeout
 	can_jump = false
+
+func _on_hit() -> void:
+	print("HIT")

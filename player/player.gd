@@ -8,24 +8,24 @@ class_name Player3D
 
 
 func _buffered_input(delta: float) -> void:
-	#if !is_action_enabled:
-		#return
+	if !is_action_enabled:
+		return
 	if InputBuffer.is_action_press_buffered("dash"):
-		dash()
+		_dash()
 		
 	if (
 		InputBuffer.is_action_press_buffered("jump") and 
 		jump_count < max_jump_count and
 		(can_jump || is_on_floor())
 	): # is on floor or coyote timer or jump count less thn max jump count
-		jump()
+		_jump()
 	if InputBuffer.is_action_press_buffered("attack"):
-		attack()
+		_attack()
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	move()
-	update_state()
-	update_animation()
+	_move()
+	_update_state()
+	_update_animation()

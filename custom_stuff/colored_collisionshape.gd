@@ -21,17 +21,24 @@ class_name ColoredCollisionShape3D extends CollisionShape3D
 ## Use world coordinates for triplanar mapping to display [param _image].
 @export var _world_triplanar: bool
 
+@export var override_mesh_opacity : float = 0.014
+
 @onready var _null_shape_mesh: Mesh = BoxMesh.new()
 
 var _previous_shape: Shape3D
 var _visualizer_mesh: MeshInstance3D
 var _visualizer_material: StandardMaterial3D
 
+static var debug_enabled : bool = false
+
+
 
 func _ready() -> void:
 	_null_shape_mesh.size = Vector3(0, 0, 0)
 	_initialize_colored_collision_shape()
 	_visualizer_mesh.mesh = _null_shape_mesh
+	
+	
 
 func _initialize_colored_collision_shape() -> void:
 	_visualizer_mesh = _create_visualizer_mesh_instance()
@@ -89,6 +96,11 @@ func _update_visualizer_material() -> void:
 	_visualizer_material.uv1_scale = _image_scale
 
 func _process(_delta: float) -> void:
+	if !debug_enabled:
+		_mesh_opacity = 0
+	else:
+		_mesh_opacity = override_mesh_opacity
+	
 	if not _visualizer_mesh.mesh == null && not shape == null:
 		_update_visualizer_material()
 		_update_visualizer_mesh_transform()
@@ -115,3 +127,10 @@ func _process(_delta: float) -> void:
 			_change_mesh_to(_null_shape_mesh)
 	
 	_previous_shape = shape
+
+## Reveses the debug enabled variable
+static func debug():
+	if debug_enabled:
+		debug_enabled = false
+	else:
+		debug_enabled = true

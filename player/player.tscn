@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://d35kvypxsr362"]
+[gd_scene load_steps=49 format=3 uid="uid://d35kvypxsr362"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Shape3D" uid="uid://btbb1atbusuek" path="res://player/player_coll_shape.tres" id="2_yslgl"]
@@ -90,7 +90,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:_mesh_opacity")
+tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:override_mesh_opacity")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -178,13 +178,13 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:_mesh_opacity")
+tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:override_mesh_opacity")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
+"update": 0,
 "values": [0.0, 0.014, 0.0]
 }
 
@@ -404,6 +404,10 @@ advance_expression = "player.current_state == player.STATE.JUMPING"
 advance_mode = 2
 advance_expression = "player.current_state == player.STATE.JUMPING"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eepf6"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.JUMPING"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_m0r7g"]
 states/End/position = Vector2(1071, 50)
 states/Start/position = Vector2(-62, 6)
@@ -419,13 +423,15 @@ states/jumping/node = SubResource("AnimationNodeAnimation_c3m8h")
 states/jumping/position = Vector2(569, -189)
 states/walking/node = SubResource("AnimationNodeAnimation_51mjb")
 states/walking/position = Vector2(502, 185)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p6c44"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_jldsv"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_xp8ua"), "idle", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_3qaqu"), "jump_anticipation", "jumping", SubResource("AnimationNodeStateMachineTransition_7l7yx"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_1f0hx"), "walking", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_mwxaa"), "idle", "dash", SubResource("AnimationNodeStateMachineTransition_h8tfx"), "jumping", "dash", SubResource("AnimationNodeStateMachineTransition_cmyhl"), "dash", "idle", SubResource("AnimationNodeStateMachineTransition_u236e"), "walking", "dash", SubResource("AnimationNodeStateMachineTransition_y0tog"), "idle", "attack1", SubResource("AnimationNodeStateMachineTransition_6u50v"), "attack1", "idle", SubResource("AnimationNodeStateMachineTransition_74sbj"), "walking", "attack1", SubResource("AnimationNodeStateMachineTransition_pef00"), "dash", "jumping", SubResource("AnimationNodeStateMachineTransition_awei6"), "attack1", "walking", SubResource("AnimationNodeStateMachineTransition_d64eu"), "walking", "jumping", SubResource("AnimationNodeStateMachineTransition_y2804"), "idle", "jumping", SubResource("AnimationNodeStateMachineTransition_ouxq5")]
-graph_offset = Vector2(-226.707, -324)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p6c44"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_jldsv"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_xp8ua"), "idle", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_3qaqu"), "jump_anticipation", "jumping", SubResource("AnimationNodeStateMachineTransition_7l7yx"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_1f0hx"), "walking", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_mwxaa"), "idle", "dash", SubResource("AnimationNodeStateMachineTransition_h8tfx"), "jumping", "dash", SubResource("AnimationNodeStateMachineTransition_cmyhl"), "dash", "idle", SubResource("AnimationNodeStateMachineTransition_u236e"), "walking", "dash", SubResource("AnimationNodeStateMachineTransition_y0tog"), "idle", "attack1", SubResource("AnimationNodeStateMachineTransition_6u50v"), "attack1", "idle", SubResource("AnimationNodeStateMachineTransition_74sbj"), "walking", "attack1", SubResource("AnimationNodeStateMachineTransition_pef00"), "dash", "jumping", SubResource("AnimationNodeStateMachineTransition_awei6"), "attack1", "walking", SubResource("AnimationNodeStateMachineTransition_d64eu"), "walking", "jumping", SubResource("AnimationNodeStateMachineTransition_y2804"), "idle", "jumping", SubResource("AnimationNodeStateMachineTransition_ouxq5"), "attack1", "jumping", SubResource("AnimationNodeStateMachineTransition_eepf6")]
+graph_offset = Vector2(-315.707, -215)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4o12y"]
 nodes/Locomotion/node = SubResource("AnimationNodeStateMachine_m0r7g")
 nodes/Locomotion/position = Vector2(-20, 140)
 node_connections = [&"output", 0, &"Locomotion"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pwt8k"]
 
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
@@ -456,7 +462,6 @@ hurtbox_owner = NodePath("../..")
 shape = ExtResource("2_yslgl")
 script = ExtResource("4_58p5f")
 _color = Color(1, 0, 0, 1)
-_mesh_opacity = 0.033
 
 [node name="HitBox" type="Area3D" parent="CollisionShape3D" node_paths=PackedStringArray("to_ignore")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
@@ -471,6 +476,7 @@ script = ExtResource("4_58p5f")
 _color = Color(1, 1, 0, 1)
 _image_scale = Vector3(0, 1, 1)
 _mesh_opacity = 0.0
+override_mesh_opacity = 0.0
 
 [node name="BlobShadow" type="Decal" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, -0.5, 4.37114e-08, 0, -4.37114e-08, -0.5, 0, -0.223315, -1.95228e-08)
@@ -484,7 +490,8 @@ libraries = {
 "": SubResource("AnimationLibrary_3oe43")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="DEPRECATED" type="AnimationTree" parent="."]
+active = false
 deterministic = false
 tree_root = SubResource("AnimationNodeBlendTree_4o12y")
 anim_player = NodePath("../AniPlayer")
@@ -498,3 +505,7 @@ text = "IDLE"
 font_size = 20
 outline_size = 0
 script = ExtResource("10_26gha")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146815, -0.124149, 0)
+process_material = SubResource("ParticleProcessMaterial_pwt8k")
