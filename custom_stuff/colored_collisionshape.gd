@@ -29,7 +29,7 @@ var _previous_shape: Shape3D
 var _visualizer_mesh: MeshInstance3D
 var _visualizer_material: StandardMaterial3D
 
-static var debug_enabled : bool = false
+
 
 
 
@@ -96,10 +96,13 @@ func _update_visualizer_material() -> void:
 	_visualizer_material.uv1_scale = _image_scale
 
 func _process(_delta: float) -> void:
-	if !debug_enabled:
-		_mesh_opacity = 0
-	else:
-		_mesh_opacity = override_mesh_opacity
+	
+	# if game is running (not in editor) 
+	if !Engine.is_editor_hint():
+		if !Debugger.debug_enabled:
+			_mesh_opacity = 0
+		else:
+			_mesh_opacity = override_mesh_opacity
 	
 	if not _visualizer_mesh.mesh == null && not shape == null:
 		_update_visualizer_material()
@@ -127,10 +130,3 @@ func _process(_delta: float) -> void:
 			_change_mesh_to(_null_shape_mesh)
 	
 	_previous_shape = shape
-
-## Reveses the debug enabled variable
-static func debug():
-	if debug_enabled:
-		debug_enabled = false
-	else:
-		debug_enabled = true

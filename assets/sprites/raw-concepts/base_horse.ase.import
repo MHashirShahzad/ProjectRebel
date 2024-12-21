@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://fmwgqw2unhm3"
+path="res://.godot/imported/base_horse.ase-8ce53af7a77b70ffb033c2bf4cecd60b.res"
+
+[deps]
+
+source_file="res://assets/sprites/raw-concepts/base_horse.ase"
+dest_files=["res://.godot/imported/base_horse.ase-8ce53af7a77b70ffb033c2bf4cecd60b.res"]
+
+[params]
+

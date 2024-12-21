@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://crwwi5l2pnolr"
+path="res://.godot/imported/basic_human_walk.ase-0f063f651dffeaf6badd31b155202aa5.res"
+
+[deps]
+
+source_file="res://assets/sprites/raw-concepts/basic_human_walk.ase"
+dest_files=["res://.godot/imported/basic_human_walk.ase-0f063f651dffeaf6badd31b155202aa5.res"]
+
+[params]
+

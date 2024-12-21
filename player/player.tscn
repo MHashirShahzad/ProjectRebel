@@ -99,6 +99,18 @@ tracks/6/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0587353, -0.00427247, -0.0197754)]
+}
 
 [sub_resource type="Animation" id="Animation_woqol"]
 resource_name = "attack1"
@@ -149,7 +161,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector3(0.195236, 0.189697, 0.0874023), Vector3(0.195236, 0.189697, 0.0874023), Vector3(0.141563, 0.189697, 0.0874023)]
+"values": [Vector3(0.195236, 0.189697, 0.0874023), Vector3(0.199669, 0.191406, 0.0874023), Vector3(0.141563, 0.189697, 0.0874023)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -186,6 +198,18 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 0.014, 0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector3(-0.0472164, 0.000854559, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ccpy1"]
@@ -302,10 +326,111 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
+[sub_resource type="Animation" id="Animation_nwn2u"]
+resource_name = "attack2"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [23, 24, 25, 26]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:custom_solver_bias")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:margin")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.04]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:override_mesh_opacity")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.014, 0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.025, 0, 0), Vector3(-0.025, 0, 0), Vector3(0.036, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [SubResource("BoxShape3D_lhrv4"), SubResource("BoxShape3D_lhrv4"), SubResource("BoxShape3D_lhrv4")]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:size")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector3(0.121915, 0.189697, 0.0874023), Vector3(0.252531, 0.189697, 0.0874023)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3oe43"]
 _data = {
 "RESET": SubResource("Animation_n4smm"),
 "attack1": SubResource("Animation_woqol"),
+"attack2": SubResource("Animation_nwn2u"),
 "dash": SubResource("Animation_ccpy1"),
 "falling": SubResource("Animation_4vw06"),
 "idle": SubResource("Animation_kvbj1"),
@@ -431,8 +556,6 @@ nodes/Locomotion/node = SubResource("AnimationNodeStateMachine_m0r7g")
 nodes/Locomotion/position = Vector2(-20, 140)
 node_connections = [&"output", 0, &"Locomotion"]
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pwt8k"]
-
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
@@ -442,6 +565,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
 shape = ExtResource("2_yslgl")
 script = ExtResource("4_58p5f")
 _color = Color(0, 1, 1, 1)
+_mesh_opacity = 0.0
 
 [node name="Sprite3D" type="Sprite3D" parent="CollisionShape3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0.02, 0)
@@ -462,6 +586,7 @@ hurtbox_owner = NodePath("../..")
 shape = ExtResource("2_yslgl")
 script = ExtResource("4_58p5f")
 _color = Color(1, 0, 0, 1)
+_mesh_opacity = 0.0
 
 [node name="HitBox" type="Area3D" parent="CollisionShape3D" node_paths=PackedStringArray("to_ignore")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
@@ -469,7 +594,7 @@ script = ExtResource("10_127yq")
 to_ignore = NodePath("../..")
 
 [node name="ColoredCollisionShape3D" type="CollisionShape3D" parent="CollisionShape3D/HitBox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06558, -0.00427247, -0.0197754)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0587353, -0.00427247, -0.0197754)
 shape = SubResource("BoxShape3D_lhrv4")
 disabled = true
 script = ExtResource("4_58p5f")
@@ -499,6 +624,7 @@ script = ExtResource("5_p1ek7")
 
 [node name="STATE" type="Label3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.137405, 0)
+visible = false
 billboard = 1
 shaded = true
 text = "IDLE"
@@ -506,6 +632,5 @@ font_size = 20
 outline_size = 0
 script = ExtResource("10_26gha")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146815, -0.124149, 0)
-process_material = SubResource("ParticleProcessMaterial_pwt8k")
+[node name="LandVFX" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.103255, 0)

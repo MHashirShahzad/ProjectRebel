@@ -24,6 +24,8 @@ signal movement_disabled
 @onready var sprite_3d: Sprite3D = $CollisionShape3D/Sprite3D
 @onready var ani_player: AnimationPlayer = $AniPlayer
 @onready var coll_shape: CollisionShape3D = $CollisionShape3D
+@onready var land_vfx: Marker3D = $LandVFX
+
 
 # <----------------------- Normal ---------------------->
 var jump_count : int = 0
@@ -60,7 +62,8 @@ enum STATE{
 	FALLING,
 	TURNING_AROUND,
 	DASHING,
-	ATTACKING_1
+	ATTACKING_1,
+	ATTACKING_2
 }
 
 # <========================== Functions ========================================>
@@ -207,13 +210,12 @@ func _attack() -> void:
 	if !is_on_floor():
 		return
 	if current_state == STATE.ATTACKING_1:
-		print("Already attackig")
+		print("POYO")
 		return
 	
 	InputBuffer._invalidate_action("attack")
 	
 	is_action_enabled = false
-	print("ACTION: ", is_action_enabled)
 	current_state = STATE.ATTACKING_1
 	await ani_player.animation_finished  # Causes bugs when ani is switched before finishind
 	print(ani_player.current_animation)
@@ -224,7 +226,8 @@ func _just_landed() -> void:
 	jump_count = 0 # reset jumps
 	if current_state == STATE.DASHING: # wave dash
 		self.velocity = self.velocity * 1.2
-
+	VFXManager.spawn_vfx(land_vfx, VFXManager.LAND_VFX)
+	
 ## Also used for coyote timer
 func _just_left_ground() -> void:
 	if jump_count != 0:

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://brxwpr8svxxwl"
+path="res://.godot/imported/basic_human_sheet.ase-1ce68e285a4be7b1380cc56102f05bc1.res"
+
+[deps]
+
+source_file="res://assets/sprites/raw-concepts/basic_human_sheet.ase"
+dest_files=["res://.godot/imported/basic_human_sheet.ase-1ce68e285a4be7b1380cc56102f05bc1.res"]
+
+[params]
+
