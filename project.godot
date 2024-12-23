@@ -21,10 +21,11 @@ InputBuffer="*res://autoloads/input_buffer.gd"
 Console="*res://addons/console/console.gd"
 Debugger="*res://autoloads/debugger.gd"
 VFXManager="*res://autoloads/vfx_manager.gd"
+HitStopManager="*res://autoloads/hit_stop_manager.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/Asset_Drawer/plugin.cfg", "res://addons/console/plugin.cfg", "res://addons/goutte.animated_shape_2d/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/Asset_Drawer/plugin.cfg", "res://addons/arrow3d/plugin.cfg", "res://addons/console/plugin.cfg", "res://addons/goutte.animated_shape_2d/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 
@@ -35,19 +36,20 @@ folder_colors={
 "res://assets/sprites/": "green",
 "res://autoloads/": "orange",
 "res://camera/": "yellow",
+"res://entity/": "pink",
 "res://level_and_stuff/": "purple",
 "res://level_and_stuff/levels/": "orange",
 "res://level_and_stuff/props/": "pink",
 "res://level_and_stuff/props/grass/": "green",
 "res://level_and_stuff/props/sky/": "teal",
 "res://level_and_stuff/props/water/": "blue",
-"res://master_char/": "pink",
 "res://player/": "red"
 }
 
 [global_group]
 
 players=""
+enemy="Every body of class enemy"
 
 [importer_defaults]
 

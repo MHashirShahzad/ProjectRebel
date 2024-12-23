@@ -1,4 +1,4 @@
-extends MasterCharacter3D
+extends Entity3D
 class_name Player3D
 
 # <========================== Variables ====================================>
@@ -29,3 +29,26 @@ func _physics_process(delta: float) -> void:
 	_move()
 	_update_state()
 	_update_animation()
+
+func _move() -> void:
+	if is_movement_enabled:
+		wish_dir = Input.get_vector("left", "right", "forward", "backward")
+	else:
+		wish_dir = Vector2.ZERO
+		
+	direction = (global_basis * Vector3(wish_dir.x, 0, wish_dir.y)).normalized()
+	if direction:
+		velocity = velocity.lerp(direction.normalized() * speed, acceleration)
+	else:
+		velocity = velocity.lerp(Vector3.ZERO, friction)
+		
+	var was_on_floor := is_on_floor()
+	
+	move_and_slide()
+	
+	if was_on_floor and !is_on_floor():
+		_just_left_ground()
+		
+	if is_on_floor() and !was_on_floor:
+		_just_landed()
+	

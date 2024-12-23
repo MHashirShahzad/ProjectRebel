@@ -1,7 +1,7 @@
 class_name HurtBox
 extends Area3D
 
-@export var hurtbox_owner : MasterCharacter3D
+@export var hurtbox_owner : Entity3D
 
 func _init() -> void:
 	collision_layer = 0
@@ -14,12 +14,30 @@ func _ready() -> void:
 func _on_area_entered(hitbox: HitBox) -> void:
 	if hitbox == null:
 		return
+		
 	if owner == hitbox.to_ignore:
 		return
+	
+	
 	if owner.has_method("_on_hit"):
-		owner._on_hit()
-		#owner._on_hit(hitbox.damage, hitbox.hit_stop, hitbox.screw_state)
-	if owner.has_method("recieve_knock_back"):
-		owner.recieve_knock_back(hitbox.global_position, hitbox.knock_back_value, hitbox.direction)
+		owner._on_hit(hitbox.damage)
+		HitStopManager.hit_stop(hitbox.hit_stop) 
+		
+		
+	if owner.has_method("_recieve_knockback"):
+		
+		# only in x direction
+		# var kb_dir : Vector3 = hitbox.to_ignore.facing
+		
+		# gets direction from that		
+		var kb_dir = hitbox.global_position.direction_to(self.global_position)
+		
+		# if player is to be launched at a -ve y velocity launch at a slight angle
+		if kb_dir.y <= 0:
+			kb_dir.y = .1
+			
+		owner._recieve_knockback(kb_dir, hitbox.kb_strength)
+		
 	if hitbox.has_method("destroy"):
 		hitbox.destroy()
+		

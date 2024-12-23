@@ -1,7 +1,7 @@
 extends Label3D
 class_name StateLabel
 
-@onready var player: Player3D = $".."
+@onready var player: Entity3D = $".."
 
 func _process(delta: float) -> void:
 	if !Debugger.debug_enabled:

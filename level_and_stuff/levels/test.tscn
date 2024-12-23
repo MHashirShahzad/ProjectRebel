@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=27 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://level_and_stuff/levels/test.gd" id="1_s0uvb"]
 [ext_resource type="Shader" path="res://level_and_stuff/props/sky/stylzied_sky.gdshader" id="2_bohi7"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://csvfnyjxb3y6x" path="res://level_and_stuff/props/water/waterplane.tscn" id="10_5utms"]
 [ext_resource type="Texture2D" uid="uid://dvgykydwu0m0s" path="res://assets/sprites/png/base_human.png" id="11_kr780"]
 [ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hitbox.gd" id="12_3ilqj"]
+[ext_resource type="PackedScene" uid="uid://dw4etb22jtvoa" path="res://enemy/enemy.tscn" id="13_eexam"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a2gqd"]
 shader = ExtResource("2_bohi7")
@@ -493,7 +494,7 @@ use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
 [node name="Player" parent="Level" instance=ExtResource("5_x50ux")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -2.94648, 4.54634, -9.75093)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -2.94648, 4.54634, -15.7509)
 
 [node name="Camera" parent="Level" node_paths=PackedStringArray("players") instance=ExtResource("6_353h1")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.8615, 4.8328, 4.82417)
@@ -557,6 +558,9 @@ script = ExtResource("12_3ilqj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
 shape = SubResource("SphereShape3D_sdvc3")
+
+[node name="Enemy" parent="." instance=ExtResource("13_eexam")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.90524, 3.00089, -14.2626)
 
 [editable path="Level/Grass"]
 [editable path="Level/Grass/grass"]

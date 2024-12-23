@@ -1,5 +1,5 @@
 extends CharacterBody3D
-class_name MasterCharacter3D
+class_name Entity3D
 # <========================== Signals ====================================>
 signal state_changed
 
@@ -25,6 +25,7 @@ signal movement_disabled
 @onready var ani_player: AnimationPlayer = $AniPlayer
 @onready var coll_shape: CollisionShape3D = $CollisionShape3D
 @onready var land_vfx: Marker3D = $LandVFX
+@onready var fsm: Node = $FSM
 
 
 # <----------------------- Normal ---------------------->
@@ -39,7 +40,7 @@ var is_action_enabled : bool = true:
 		else:
 			input_disabled.emit
 		is_action_enabled = value
-			
+
 var is_movement_enabled : bool = true:
 	set(value):
 		if value == true:
@@ -49,11 +50,15 @@ var is_movement_enabled : bool = true:
 		is_movement_enabled = value
 
 var facing: Vector3:
-	get: return global_transform.basis.z
+	get: return -coll_shape.global_transform.basis.x
+
 var current_state : STATE = STATE.IDLE
 
 var can_jump : bool = true
 
+var health : float = 100
+
+		
 enum STATE{
 	IDLE,
 	WALKING,
@@ -92,18 +97,13 @@ func _can_turn_around(factor : Vector2) -> bool:
 	return false
 	
 func _move() -> void:
-	if is_movement_enabled:
-		wish_dir = Input.get_vector("left", "right", "forward", "backward")
-	else:
-		wish_dir = Vector2.ZERO
-		
+	
 	direction = (global_basis * Vector3(wish_dir.x, 0, wish_dir.y)).normalized()
 	if direction:
 		velocity = velocity.lerp(direction.normalized() * speed, acceleration)
 	else:
 		velocity = velocity.lerp(Vector3.ZERO, friction)
-	
-
+		
 	var was_on_floor := is_on_floor()
 	
 	move_and_slide()
@@ -113,7 +113,7 @@ func _move() -> void:
 		
 	if is_on_floor() and !was_on_floor:
 		_just_landed()
-		
+
 func _jump() -> void:
 	jump_count += 1
 	can_jump = false
@@ -154,7 +154,6 @@ func _update_state() -> void:
 		_ground_state(vel_round)
 	else:
 		_air_state(vel_round)
-	printraw("\rState: ", current_state)
 	
 func _ground_state(vel_round : Vector3) -> void:
 	if current_state == STATE.JUMP_ANTICIPATION: #|| current_state == STATE.ATTACKING_1:
@@ -171,6 +170,8 @@ func _ground_state(vel_round : Vector3) -> void:
 		current_state = STATE.TURNING_AROUND
 		await ani_player.animation_finished
 		is_action_enabled = true
+	
+	# If approximately not moving
 	elif ! is_zero_approx(wish_dir.x)  || ! is_zero_approx(wish_dir.y):
 		current_state = STATE.WALKING
 	else:
@@ -218,7 +219,6 @@ func _attack() -> void:
 	is_action_enabled = false
 	current_state = STATE.ATTACKING_1
 	await ani_player.animation_finished  # Causes bugs when ani is switched before finishind
-	print(ani_player.current_animation)
 	current_state = STATE.IDLE
 	is_action_enabled = true
 
@@ -237,5 +237,15 @@ func _just_left_ground() -> void:
 	await get_tree().create_timer(.2).timeout
 	can_jump = false
 
-func _on_hit() -> void:
-	print("HIT")
+func _on_hit(damage : float) -> void:
+	health -= damage
+	print(self.name, " : ",health)
+	
+	if health <= 0:
+		print("DEAD")
+
+func _recieve_knockback(kb_dir : Vector3, strength : float) -> void:
+
+	
+	var knock_back = kb_dir * strength
+	velocity += knock_back
