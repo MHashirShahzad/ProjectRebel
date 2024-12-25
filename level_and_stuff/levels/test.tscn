@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=29 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://level_and_stuff/levels/test.gd" id="1_s0uvb"]
 [ext_resource type="Shader" path="res://level_and_stuff/props/sky/stylzied_sky.gdshader" id="2_bohi7"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://dvgykydwu0m0s" path="res://assets/sprites/png/base_human.png" id="11_kr780"]
 [ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hitbox.gd" id="12_3ilqj"]
 [ext_resource type="PackedScene" uid="uid://dw4etb22jtvoa" path="res://enemy/enemy.tscn" id="13_eexam"]
+[ext_resource type="PackedScene" uid="uid://dpx4v6iqtaut5" path="res://assets/Free Modular Low Poly Dungeon/low poly dungeon assets.fbx" id="14_1p070"]
+[ext_resource type="PackedScene" uid="uid://dmuhuiuf8jqsi" path="res://assets/Free Modular Low Poly Dungeon/low poly dungeon sample.fbx" id="15_anhv5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a2gqd"]
 shader = ExtResource("2_bohi7")
@@ -452,6 +454,7 @@ shadow_blur = 1.587
 
 [node name="Clouds" parent="." instance=ExtResource("3_7sfil")]
 transform = Transform3D(279.518, 0, 0, 0, 1, 0, 0, 0, 238.198, 0.139587, 62.1593, 20.7271)
+visible = false
 material_override = SubResource("ShaderMaterial_dwytk")
 
 [node name="Level" type="Node" parent="."]
@@ -561,6 +564,12 @@ shape = SubResource("SphereShape3D_sdvc3")
 
 [node name="Enemy" parent="." instance=ExtResource("13_eexam")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.90524, 3.00089, -14.2626)
+
+[node name="low poly dungeon assets" parent="." instance=ExtResource("14_1p070")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.439, 0.666662, -21.4004)
+
+[node name="low poly dungeon sample" parent="." instance=ExtResource("15_anhv5")]
+transform = Transform3D(-0.999318, 0, 0.0369228, 0, 1, 0, -0.0369228, 0, -0.999318, 53.3713, 0.0332837, -77.3421)
 
 [editable path="Level/Grass"]
 [editable path="Level/Grass/grass"]

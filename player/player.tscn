@@ -1,14 +1,20 @@
-[gd_scene load_steps=49 format=3 uid="uid://d35kvypxsr362"]
+[gd_scene load_steps=52 format=3 uid="uid://d35kvypxsr362"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Shape3D" uid="uid://btbb1atbusuek" path="res://player/player_coll_shape.tres" id="2_yslgl"]
 [ext_resource type="Texture2D" uid="uid://ra1jpgi8nk4o" path="res://assets/sprites/player/shadow.png" id="3_t5uke"]
+[ext_resource type="Shader" path="res://custom_stuff/hit_effect.gdshader" id="4_7j35y"]
 [ext_resource type="Script" path="res://custom_stuff/colored_collisionshape.gd" id="4_58p5f"]
 [ext_resource type="Texture2D" uid="uid://c2b1ctli0315y" path="res://assets/sprites/player/player.png" id="5_24v88"]
 [ext_resource type="Script" path="res://player/finite_state_machine.gd" id="9_10k5r"]
 [ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hurtbox.gd" id="9_g7ug0"]
 [ext_resource type="Script" path="res://player/state.gd" id="10_26gha"]
 [ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hitbox.gd" id="10_127yq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xw3xr"]
+render_priority = 0
+shader = ExtResource("4_7j35y")
+shader_parameter/active = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lhrv4"]
 size = Vector3(0.195236, 0.189697, 0.0874023)
@@ -110,6 +116,18 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("CollisionShape3D/Sprite3D:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_woqol"]
@@ -426,6 +444,22 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
+[sub_resource type="Animation" id="Animation_o0m60"]
+resource_name = "hit"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3oe43"]
 _data = {
 "RESET": SubResource("Animation_n4smm"),
@@ -433,6 +467,7 @@ _data = {
 "attack2": SubResource("Animation_nwn2u"),
 "dash": SubResource("Animation_ccpy1"),
 "falling": SubResource("Animation_4vw06"),
+"hit": SubResource("Animation_o0m60"),
 "idle": SubResource("Animation_kvbj1"),
 "jump_anticipation": SubResource("Animation_1xuld"),
 "jumping": SubResource("Animation_r8rgp"),
@@ -570,6 +605,7 @@ _mesh_opacity = 0.0
 [node name="Sprite3D" type="Sprite3D" parent="CollisionShape3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0.02, 0)
 layers = 2
+material_overlay = SubResource("ShaderMaterial_xw3xr")
 cast_shadow = 2
 shaded = true
 alpha_cut = 3

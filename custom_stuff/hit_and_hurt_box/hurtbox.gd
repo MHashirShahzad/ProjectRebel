@@ -22,14 +22,15 @@ func _on_area_entered(hitbox: HitBox) -> void:
 	if owner.has_method("_on_hit"):
 		owner._on_hit(hitbox.damage)
 		HitStopManager.hit_stop(hitbox.hit_stop) 
-		
+	if owner.has_method("_screw_state"):
+		owner._screw_state(hitbox.hit_stop)
 		
 	if owner.has_method("_recieve_knockback"):
 		
 		# only in x direction
 		# var kb_dir : Vector3 = hitbox.to_ignore.facing
 		
-		# gets direction from that		
+		# gets direction from that
 		var kb_dir = hitbox.global_position.direction_to(self.global_position)
 		
 		# if player is to be launched at a -ve y velocity launch at a slight angle

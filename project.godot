@@ -25,7 +25,7 @@ HitStopManager="*res://autoloads/hit_stop_manager.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/Asset_Drawer/plugin.cfg", "res://addons/arrow3d/plugin.cfg", "res://addons/console/plugin.cfg", "res://addons/goutte.animated_shape_2d/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/Asset_Drawer/plugin.cfg", "res://addons/console/plugin.cfg", "res://addons/goutte.animated_shape_2d/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 

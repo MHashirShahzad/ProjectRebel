@@ -85,6 +85,7 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	_buffered_input(delta)
 
+# rotate 
 func _can_turn_around(factor : Vector2) -> bool:
 	if coll_shape.rotation_degrees.y == 180:
 		if factor.x < 0: # if player is inputing right 
@@ -115,6 +116,7 @@ func _move() -> void:
 		_just_landed()
 
 func _jump() -> void:
+
 	jump_count += 1
 	can_jump = false
 	
@@ -122,7 +124,7 @@ func _jump() -> void:
 	# State managing
 	current_state = STATE.JUMP_ANTICIPATION
 	await ani_player.animation_finished
-	
+	stretch()
 	current_state = STATE.JUMPING
 	velocity.y = jump_velocity
 
@@ -227,6 +229,7 @@ func _just_landed() -> void:
 	if current_state == STATE.DASHING: # wave dash
 		self.velocity = self.velocity * 1.2
 	VFXManager.spawn_vfx(land_vfx, VFXManager.LAND_VFX)
+	squash()
 	
 ## Also used for coyote timer
 func _just_left_ground() -> void:
@@ -249,3 +252,37 @@ func _recieve_knockback(kb_dir : Vector3, strength : float) -> void:
 	
 	var knock_back = kb_dir * strength
 	velocity += knock_back
+
+func stretch() -> void:
+	const STRETCHED_SIZE : Vector3 = Vector3(.7,1.3,1)
+	sprite_3d.scale = STRETCHED_SIZE
+	var tween : Tween = get_tree().create_tween()
+	tween.tween_property(sprite_3d,"scale", Vector3(1,1,1),.1)
+	await tween.finished
+	tween.kill()
+	
+func squash() -> void:
+	const SQUASHED_SIZE : Vector3 = Vector3(1.3,0.7,1)
+	sprite_3d.scale = SQUASHED_SIZE
+	var tween : Tween = get_tree().create_tween()
+	tween.tween_property(sprite_3d, "scale", Vector3(1,1,1),.1)
+	await tween.finished
+	tween.kill()
+
+func _screw_state(duration : float) -> void:
+	var cur_pos : Vector3 = sprite_3d.position
+	var timer : Timer = Timer.new()
+	timer.wait_time = duration
+	
+	self.add_child(timer)
+	timer.start()
+	
+	self.remove_child(timer)
+	timer.queue_free()
+	while(timer):
+		await get_tree().create_timer(0.01).timeout
+		sprite_3d.position.x = cur_pos.x + randi_range(-0.05,0.05)
+		sprite_3d.position.y = cur_pos.y + randi_range(-0.05,0.05)
+	print("TIMER DED")
+	await get_tree().create_timer(duration).timeout
+	sprite_3d.position = cur_pos
