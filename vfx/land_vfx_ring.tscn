@@ -3,21 +3,22 @@
 [ext_resource type="Texture2D" uid="uid://c2b1ctli0315y" path="res://assets/sprites/player/player.png" id="1_d4srg"]
 
 [sub_resource type="Curve" id="Curve_rnu4a"]
-_data = [Vector2(0, 0.648352), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.624113, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_6s4i8"]
 curve = SubResource("Curve_rnu4a")
 
 [sub_resource type="Curve" id="Curve_rtxwn"]
-_data = [Vector2(0, 0.593407), 0.0, 0.0, 0, 0, Vector2(0.25, 0.747253), 0.0, 0.0, 0, 0, Vector2(0.967949, 0.472527), 0.0, 0.0, 0, 0]
-point_count = 3
+max_value = 2.0
+_data = [Vector2(0, 0.54945), 0.0, 0.0, 0, 0, Vector2(1, 1.73626), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_pe0bl"]
 curve = SubResource("Curve_rtxwn")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pwt8k"]
-gravity = Vector3(0, -2, 0)
+gravity = Vector3(0, 0, 0)
 scale_min = 2.5
 scale_max = 3.0
 scale_curve = SubResource("CurveTexture_pe0bl")
@@ -40,7 +41,7 @@ emitting = false
 amount = 1
 one_shot = true
 speed_scale = 1.5
-explosiveness = 1.0
+explosiveness = 0.45
 randomness = 0.25
 process_material = SubResource("ParticleProcessMaterial_pwt8k")
 draw_pass_1 = SubResource("TorusMesh_jytj3")
