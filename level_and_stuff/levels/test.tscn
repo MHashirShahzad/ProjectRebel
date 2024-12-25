@@ -1,7 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=26 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://level_and_stuff/levels/test.gd" id="1_s0uvb"]
-[ext_resource type="Shader" path="res://level_and_stuff/props/sky/stylzied_sky.gdshader" id="2_bohi7"]
 [ext_resource type="PackedScene" uid="uid://dflm2k2u8b5mu" path="res://level_and_stuff/props/sky/clouds/clouds_shadowless.tscn" id="3_7sfil"]
 [ext_resource type="Shader" path="res://level_and_stuff/props/sky/clouds/clouds.gdshader" id="4_111rd"]
 [ext_resource type="PackedScene" uid="uid://d35kvypxsr362" path="res://player/player.tscn" id="5_x50ux"]
@@ -13,35 +12,16 @@
 [ext_resource type="Texture2D" uid="uid://dvgykydwu0m0s" path="res://assets/sprites/png/base_human.png" id="11_kr780"]
 [ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hitbox.gd" id="12_3ilqj"]
 [ext_resource type="PackedScene" uid="uid://dw4etb22jtvoa" path="res://enemy/enemy.tscn" id="13_eexam"]
-[ext_resource type="PackedScene" uid="uid://dpx4v6iqtaut5" path="res://assets/Free Modular Low Poly Dungeon/low poly dungeon assets.fbx" id="14_1p070"]
-[ext_resource type="PackedScene" uid="uid://dmuhuiuf8jqsi" path="res://assets/Free Modular Low Poly Dungeon/low poly dungeon sample.fbx" id="15_anhv5"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a2gqd"]
-shader = ExtResource("2_bohi7")
-shader_parameter/clouds_samples = 16
-shader_parameter/shadow_sample = 4
-shader_parameter/clouds_density = 0.5
-shader_parameter/clouds_scale = 1.0
-shader_parameter/clouds_smoothness = 0.035
-shader_parameter/clouds_light_color = null
-shader_parameter/clouds_shadow_intensity = 1.0
-shader_parameter/high_clouds_density = 0.0
-shader_parameter/top_color = Color(0.34902, 0.588235, 1, 1)
-shader_parameter/bottom_color = Color(0, 0.329412, 0.968627, 1)
-shader_parameter/sun_scatter = Color(0.298039, 0.298039, 0.298039, 1)
-shader_parameter/astro_tint = Color(0, 0, 0, 1)
-shader_parameter/astro_scale = 1.0
-shader_parameter/astro_intensity = 1.0
-shader_parameter/stars_intensity = 0.0
-shader_parameter/shooting_stars_intensity = 0.0
-shader_parameter/shooting_star_tint = null
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_oc1yt"]
 
-[sub_resource type="Sky" id="Sky_4rrej"]
-sky_material = SubResource("ShaderMaterial_a2gqd")
+[sub_resource type="Sky" id="Sky_5i83e"]
+sky_material = SubResource("PhysicalSkyMaterial_oc1yt")
+radiance_size = 0
 
 [sub_resource type="Environment" id="Environment_25t8a"]
-background_mode = 2
-sky = SubResource("Sky_4rrej")
+background_energy_multiplier = 0.0
+sky = SubResource("Sky_5i83e")
 ambient_light_source = 3
 ambient_light_sky_contribution = 0.1
 reflected_light_source = 2
@@ -80,10 +60,12 @@ shader_parameter/noiseTexture = SubResource("NoiseTexture2D_5qba4")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7vhhr"]
 albedo_color = Color(0.188235, 0.231373, 0.0627451, 1)
+distance_fade_mode = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0qnyd"]
 metallic = 1.0
 roughness = 0.5
+distance_fade_max_distance = 20.0
 
 [sub_resource type="Shader" id="Shader_ni0g8"]
 code = "shader_type spatial;
@@ -448,6 +430,7 @@ environment = SubResource("Environment_25t8a")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.869533, -0.210669, 0.446689, 0.493018, -0.423533, 0.75997, 0.0290832, 0.881044, 0.472139, 0, 0, 0)
+visible = false
 light_color = Color(1, 1, 0.894118, 1)
 shadow_enabled = true
 shadow_blur = 1.587
@@ -466,7 +449,7 @@ use_collision = true
 size = Vector3(212.466, 1, 130.33)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41067, 1.24124, -2.56712)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.71207, 7.70094, -70.2253)
 use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
@@ -476,9 +459,19 @@ use_collision = true
 size = Vector3(14.4253, 6.64258, 2.77251)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.90536, 1.24124, -28.8216)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.1536, 1.24124, -64.5462)
 use_collision = true
-size = Vector3(3.11047, 1, 2.77251)
+size = Vector3(36.8846, 1, 14.4287)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, -0.0117807, 0.999931, 0, -0.999931, -0.0117807, 10.1536, 8.5307, -72.0119)
+use_collision = true
+size = Vector3(36.8846, 1, 14.4287)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, -0.0117807, 0.999931, 0, -0.999931, -0.0117807, -7.28086, 8.60835, -64.919)
+use_collision = true
+size = Vector3(2.01164, 15.1919, 14.4287)
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="Level"]
 transform = Transform3D(0.565053, -0.825054, 0, 0.825054, 0.565053, 0, 0, 0, 1, 15.8896, 0.742077, -28.6715)
@@ -486,10 +479,16 @@ use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="Level"]
-transform = Transform3D(0.883643, -0.468161, 0, 0.468161, 0.883643, 0, 0, 0, 1, 16.3952, 1.49108, -24.7607)
+transform = Transform3D(-3.90162e-08, 1.97085e-08, 1, 0.553668, 0.832738, 5.19e-09, -0.832738, 0.553668, -4.34022e-08, -5.60339, 4.15438, -63.6808)
 material_override = SubResource("StandardMaterial3D_0qnyd")
 use_collision = true
-size = Vector3(6.31024, 1, 2.77251)
+size = Vector3(13.0791, 1, 2.77251)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="Level"]
+transform = Transform3D(0.932166, -0.362031, 0, 0.362031, 0.932166, 0, 0, 0, 1, 1.87661, 9.902, -70.3587)
+material_override = SubResource("StandardMaterial3D_0qnyd")
+use_collision = true
+size = Vector3(13.0791, 1, 2.77251)
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="Level"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.3808, 1.24124, -28.8201)
@@ -497,7 +496,7 @@ use_collision = true
 size = Vector3(3.11047, 1, 2.77251)
 
 [node name="Player" parent="Level" instance=ExtResource("5_x50ux")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -2.94648, 4.54634, -15.7509)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -2.94504, 4.57635, -67.721)
 
 [node name="Camera" parent="Level" node_paths=PackedStringArray("players") instance=ExtResource("6_353h1")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.8615, 4.8328, 4.82417)
@@ -510,11 +509,25 @@ light_color = Color(1, 0, 1, 1)
 omni_range = 7.67659
 
 [node name="OmniLight3D2" type="OmniLight3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.083, 2.26116, -22.1766)
-light_color = Color(5.48691e-06, 0.725978, 0.602554, 1)
-light_energy = 7.943
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.19856, 6.96174, -62.5273)
+light_color = Color(0.804857, 0.568728, 0.27469, 1)
+light_energy = 0.1
 shadow_enabled = true
-omni_range = 7.39618
+omni_range = 15.9485
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5279, 6.96174, -62.5273)
+light_color = Color(0.962264, 0.804278, 0.627591, 1)
+light_energy = 0.1
+shadow_enabled = true
+omni_range = 15.9485
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3375, 13.0206, -68.9774)
+light_color = Color(0.804857, 0.568728, 0.27469, 1)
+light_energy = 0.1
+shadow_enabled = true
+omni_range = 15.9485
 
 [node name="Sprite3D" type="Sprite3D" parent="Level"]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -14.035, 3.71218, 15.505)
@@ -563,13 +576,7 @@ script = ExtResource("12_3ilqj")
 shape = SubResource("SphereShape3D_sdvc3")
 
 [node name="Enemy" parent="." instance=ExtResource("13_eexam")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.90524, 3.00089, -14.2626)
-
-[node name="low poly dungeon assets" parent="." instance=ExtResource("14_1p070")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.439, 0.666662, -21.4004)
-
-[node name="low poly dungeon sample" parent="." instance=ExtResource("15_anhv5")]
-transform = Transform3D(-0.999318, 0, 0.0369228, 0, 1, 0, -0.0369228, 0, -0.999318, 53.3713, 0.0332837, -77.3421)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.90524, 3.00089, -65.8674)
 
 [editable path="Level/Grass"]
 [editable path="Level/Grass/grass"]

@@ -1,20 +1,14 @@
-[gd_scene load_steps=52 format=3 uid="uid://d35kvypxsr362"]
+[gd_scene load_steps=50 format=3 uid="uid://d35kvypxsr362"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
 [ext_resource type="Shape3D" uid="uid://btbb1atbusuek" path="res://player/player_coll_shape.tres" id="2_yslgl"]
 [ext_resource type="Texture2D" uid="uid://ra1jpgi8nk4o" path="res://assets/sprites/player/shadow.png" id="3_t5uke"]
-[ext_resource type="Shader" path="res://custom_stuff/hit_effect.gdshader" id="4_7j35y"]
 [ext_resource type="Script" path="res://custom_stuff/colored_collisionshape.gd" id="4_58p5f"]
 [ext_resource type="Texture2D" uid="uid://c2b1ctli0315y" path="res://assets/sprites/player/player.png" id="5_24v88"]
 [ext_resource type="Script" path="res://player/finite_state_machine.gd" id="9_10k5r"]
 [ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hurtbox.gd" id="9_g7ug0"]
 [ext_resource type="Script" path="res://player/state.gd" id="10_26gha"]
 [ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hitbox.gd" id="10_127yq"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xw3xr"]
-render_priority = 0
-shader = ExtResource("4_7j35y")
-shader_parameter/active = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lhrv4"]
 size = Vector3(0.195236, 0.189697, 0.0874023)
@@ -605,7 +599,6 @@ _mesh_opacity = 0.0
 [node name="Sprite3D" type="Sprite3D" parent="CollisionShape3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0.02, 0)
 layers = 2
-material_overlay = SubResource("ShaderMaterial_xw3xr")
 cast_shadow = 2
 shaded = true
 alpha_cut = 3
@@ -628,6 +621,7 @@ _mesh_opacity = 0.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 script = ExtResource("10_127yq")
 kb_strength = 20.0
+hit_stop = 0.3
 to_ignore = NodePath("../..")
 
 [node name="ColoredCollisionShape3D" type="CollisionShape3D" parent="CollisionShape3D/HitBox"]

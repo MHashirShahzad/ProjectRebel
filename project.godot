@@ -132,6 +132,10 @@ attack={
 3d_physics/layer_2="Player"
 3d_physics/layer_32="HitBox/HurtBox"
 
+[physics]
+
+3d/default_gravity=17.0
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
