@@ -10,6 +10,7 @@ dof_blur_far_enabled = true
 dof_blur_far_distance = 34.05
 dof_blur_near_enabled = true
 dof_blur_amount = 0.01
+auto_exposure_min_sensitivity = 500.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ra3ua"]
 shader = ExtResource("2_2m6lo")
@@ -17,7 +18,7 @@ shader_parameter/inner_radius = 0.1
 shader_parameter/outer_radius = 0.825
 shader_parameter/vignette_strength = 1.0
 shader_parameter/dither_strength = 0.03
-shader_parameter/vignette_color = null
+shader_parameter/vignette_color = Color(0, 0, 0.0392157, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r4dps"]
 shader = ExtResource("4_qb04j")

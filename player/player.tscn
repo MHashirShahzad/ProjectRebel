@@ -600,6 +600,7 @@ _mesh_opacity = 0.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0.02, 0)
 layers = 2
 cast_shadow = 2
+lod_bias = 128.0
 shaded = true
 alpha_cut = 3
 texture_filter = 0

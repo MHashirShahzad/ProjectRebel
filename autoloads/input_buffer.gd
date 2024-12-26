@@ -99,7 +99,7 @@ func is_action_press_buffered(action: String) -> bool:
 
 # Records unreasonable timestamps for all the inputs in an action. Called when IsActionPressBuffered returns true, as
 # otherwise it would continue returning true every frame for the rest of the buffer window.
-func _invalidate_action(action: String) -> void:
+func invalidate_action(action: String) -> void:
 	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
 			var scancode: int = event.keycode

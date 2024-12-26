@@ -1,0 +1,97 @@
+[gd_scene load_steps=16 format=3 uid="uid://bjcojs3ybpuks"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8rqo8"]
+albedo_color = Color(0.300124, 0.0619592, 0.00278361, 1)
+
+[sub_resource type="Gradient" id="Gradient_4kuow"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4784y"]
+gradient = SubResource("Gradient_4kuow")
+
+[sub_resource type="Curve" id="Curve_k8bw1"]
+_data = [Vector2(0.0141844, 0.593406), 0.0, 0.0, 0, 0, Vector2(0.475177, 0.681319), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_78dml"]
+curve = SubResource("Curve_k8bw1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gqte2"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_78dml")
+color_ramp = SubResource("GradientTexture1D_4784y")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nd6xc"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(2, 0.247, 0, 1)
+disable_receive_shadows = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_7ofpc"]
+material = SubResource("StandardMaterial3D_nd6xc")
+radius = 0.4
+height = 0.8
+radial_segments = 16
+rings = 8
+
+[sub_resource type="Gradient" id="Gradient_awimw"]
+offsets = PackedFloat32Array(0, 0.566372, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_68jcu"]
+gradient = SubResource("Gradient_awimw")
+
+[sub_resource type="Curve" id="Curve_s5m7p"]
+_data = [Vector2(0.0141844, 0.593406), 0.0, 0.0, 0, 0, Vector2(0.475177, 0.681319), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_fgkel"]
+curve = SubResource("Curve_s5m7p")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eeiav"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_fgkel")
+color_ramp = SubResource("GradientTexture1D_68jcu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ga2d0"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(3, 0, 0, 1)
+disable_receive_shadows = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_jkytm"]
+material = SubResource("StandardMaterial3D_ga2d0")
+radial_segments = 16
+rings = 8
+
+[node name="Torch" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0117188, -0.674805, -0.00332642)
+material_override = SubResource("StandardMaterial3D_8rqo8")
+size = Vector3(0.335938, 1.21094, 0.270569)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000732422, -0.154297, -0.00362396)
+material_override = SubResource("StandardMaterial3D_8rqo8")
+size = Vector3(0.515137, 0.169922, 0.444717)
+
+[node name="Orange" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.040656, 0)
+process_material = SubResource("ParticleProcessMaterial_gqte2")
+draw_pass_1 = SubResource("SphereMesh_7ofpc")
+
+[node name="REd" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.040845, 0)
+process_material = SubResource("ParticleProcessMaterial_eeiav")
+draw_pass_1 = SubResource("SphereMesh_jkytm")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0.666667, 0.258824, 0.0117647, 1)
+light_energy = 16.0

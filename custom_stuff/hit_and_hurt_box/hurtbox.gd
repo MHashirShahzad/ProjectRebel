@@ -19,13 +19,13 @@ func _on_area_entered(hitbox: HitBox) -> void:
 		return
 	
 	
-	if owner.has_method("_on_hit"):
-		owner._on_hit(hitbox.damage)
+	if owner.has_method("on_hit"):
+		owner.on_hit(hitbox.damage)
 		HitStopManager.hit_stop(hitbox.hit_stop) 
-	if owner.has_method("_screw_state"):
-		owner._screw_state(hitbox.hit_stop)
+	if owner.has_method("screw_state"):
+		owner.screw_state(hitbox.hit_stop)
 		
-	if owner.has_method("_recieve_knockback"):
+	if owner.has_method("recieve_knockback"):
 		
 		# only in x direction
 		# var kb_dir : Vector3 = hitbox.to_ignore.facing
@@ -37,7 +37,7 @@ func _on_area_entered(hitbox: HitBox) -> void:
 		if kb_dir.y <= 0:
 			kb_dir.y = .1
 			
-		owner._recieve_knockback(kb_dir, hitbox.kb_strength)
+		owner.recieve_knockback(kb_dir, hitbox.kb_strength)
 		
 	if hitbox.has_method("destroy"):
 		hitbox.destroy()

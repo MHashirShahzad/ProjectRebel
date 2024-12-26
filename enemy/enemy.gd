@@ -10,6 +10,6 @@ func _physics_process(delta: float) -> void:
 	
 	
 	
-	_move()
-	_update_state()
-	_update_animation()
+	move()
+	update_state()
+	update_animation()

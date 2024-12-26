@@ -16,7 +16,9 @@ signal movement_disabled
 @export var speed : float = 10
 @export var friction : float = 0.08
 @export var acceleration : float = 0.04
-@export var jump_velocity : float = 8
+@export var jump_velocity : float = 14
+## When the player releases jump key his velocity is multiplied by this
+@export var jump_falloff : float = 0.8
 ## X value is applied for velocity.x and velocity.z while y value is for air
 @export var dash_velocity : Vector2 = Vector2(15, -1)
 @export var max_jump_count : int = 1
@@ -73,20 +75,20 @@ enum STATE{
 
 # <========================== Functions ========================================>
 
-func _buffered_input(delta: float) -> void:
+func buffered_input(delta: float) -> void:
 	pass
 
 func _input(event: InputEvent) -> void:
-	pass
+	variable_jump_heights(event)
 	
 func _physics_process(delta: float) -> void:
 	pass
 	
 func _process(delta: float) -> void:
-	_buffered_input(delta)
+	buffered_input(delta)
 
 # rotate 
-func _can_turn_around(factor : Vector2) -> bool:
+func can_turn_around(factor : Vector2) -> bool:
 	if coll_shape.rotation_degrees.y == 180:
 		if factor.x < 0: # if player is inputing right 
 			coll_shape.rotation_degrees.y = 0
@@ -97,7 +99,7 @@ func _can_turn_around(factor : Vector2) -> bool:
 			return true
 	return false
 	
-func _move() -> void:
+func move() -> void:
 	
 	direction = (global_basis * Vector3(wish_dir.x, 0, wish_dir.y)).normalized()
 	if direction:
@@ -110,25 +112,27 @@ func _move() -> void:
 	move_and_slide()
 	
 	if was_on_floor and !is_on_floor():
-		_just_left_ground()
+		just_left_ground()
 		
 	if is_on_floor() and !was_on_floor:
-		_just_landed()
+		just_landed()
 
-func _jump() -> void:
+func jump() -> void:
 
 	jump_count += 1
 	can_jump = false
 	
-	InputBuffer._invalidate_action("jump")
+	InputBuffer.invalidate_action("jump")
 	# State managing
+
 	current_state = STATE.JUMP_ANTICIPATION
 	await ani_player.animation_finished
+	# sVFXManager.spawn_vfx(land_vfx, VFXManager.JUMP_VFX)
 	stretch()
 	current_state = STATE.JUMPING
 	velocity.y = jump_velocity
 
-func _update_animation():
+func update_animation():
 	# if already playing turn around return
 	if ani_player.get_current_animation() == "turn_around":
 		return
@@ -150,24 +154,24 @@ func _update_animation():
 		STATE.ATTACKING_1:
 			ani_player.play("attack1")
 	
-func _update_state() -> void:
+func update_state() -> void:
 	var vel_round := velocity.round()
 	if is_on_floor():
-		_ground_state(vel_round)
+		ground_state(vel_round)
 	else:
-		_air_state(vel_round)
+		air_state(vel_round)
 	
-func _ground_state(vel_round : Vector3) -> void:
+func ground_state(vel_round : Vector3) -> void:
 	if current_state == STATE.JUMP_ANTICIPATION: #|| current_state == STATE.ATTACKING_1:
 		return
 	if current_state == STATE.DASHING:
-		_can_turn_around(Vector2(vel_round.x, vel_round.y)) # if 
+		can_turn_around(Vector2(vel_round.x, vel_round.y)) # if 
 		return
 	if current_state == STATE.ATTACKING_1:
-		_can_turn_around(wish_dir)
+		can_turn_around(wish_dir)
 		return
 	
-	if _can_turn_around(wish_dir):
+	if can_turn_around(wish_dir):
 		is_action_enabled = false
 		current_state = STATE.TURNING_AROUND
 		await ani_player.animation_finished
@@ -179,16 +183,16 @@ func _ground_state(vel_round : Vector3) -> void:
 	else:
 		current_state = STATE.IDLE
 		
-func _air_state(vel_round : Vector3) -> void:
+func air_state(vel_round : Vector3) -> void:
 	if current_state == STATE.DASHING:
 		return
-	_can_turn_around(wish_dir)
+	can_turn_around(wish_dir)
 	if vel_round.y > 1:
 		current_state = STATE.JUMPING
 	elif vel_round.y < -1:
 		current_state = STATE.JUMPING # falling
 
-func _dash() -> void:
+func dash() -> void:
 	if current_state == STATE.DASHING or current_state == STATE.JUMP_ANTICIPATION:
 		return
 		
@@ -202,21 +206,21 @@ func _dash() -> void:
 	self.velocity.y = dash_velocity.y
 	
 	# invalidate the buffer
-	InputBuffer._invalidate_action("dash")
+	InputBuffer.invalidate_action("dash")
 	is_action_enabled = false
 	current_state = STATE.DASHING
 	await ani_player.animation_finished
 	current_state = STATE.IDLE
 	is_action_enabled = true
 	
-func _attack() -> void:
+func attack() -> void:
 	if !is_on_floor():
 		return
 	if current_state == STATE.ATTACKING_1:
 		print("POYO")
 		return
 	
-	InputBuffer._invalidate_action("attack")
+	InputBuffer.invalidate_action("attack")
 	
 	is_action_enabled = false
 	current_state = STATE.ATTACKING_1
@@ -224,7 +228,7 @@ func _attack() -> void:
 	current_state = STATE.IDLE
 	is_action_enabled = true
 
-func _just_landed() -> void:
+func just_landed() -> void:
 	jump_count = 0 # reset jumps
 	if current_state == STATE.DASHING: # wave dash
 		self.velocity = self.velocity * 1.2
@@ -232,7 +236,7 @@ func _just_landed() -> void:
 	squash()
 	
 ## Also used for coyote timer
-func _just_left_ground() -> void:
+func just_left_ground() -> void:
 	if jump_count != 0:
 		return
 	# Coyote time
@@ -240,14 +244,14 @@ func _just_left_ground() -> void:
 	await get_tree().create_timer(.2).timeout
 	can_jump = false
 
-func _on_hit(damage : float) -> void:
+func on_hit(damage : float) -> void:
 	health -= damage
 	print(self.name, " : ",health)
 	
 	if health <= 0:
 		print("DEAD")
 
-func _recieve_knockback(kb_dir : Vector3, strength : float) -> void:
+func recieve_knockback(kb_dir : Vector3, strength : float) -> void:
 
 	
 	var knock_back = kb_dir * strength
@@ -269,7 +273,7 @@ func squash() -> void:
 	await tween.finished
 	tween.kill()
 
-func _screw_state(duration : float) -> void:
+func screw_state(duration : float) -> void:
 	var cur_pos : Vector3 = sprite_3d.position
 	var timer : Timer = Timer.new()
 	timer.wait_time = duration
@@ -286,3 +290,14 @@ func _screw_state(duration : float) -> void:
 	print("TIMER DED")
 	await get_tree().create_timer(duration).timeout
 	sprite_3d.position = cur_pos
+
+func variable_jump_heights(event : InputEvent):
+	if event.is_action_released("jump"):
+		# if not falling
+		if velocity.y >= 0.0:
+			
+			# if btn left when in jump ani wait till player jump
+			if current_state == STATE.JUMP_ANTICIPATION:
+				await ani_player.animation_finished
+				
+			velocity.y *= jump_falloff

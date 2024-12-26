@@ -42,6 +42,7 @@ folder_colors={
 "res://level_and_stuff/props/": "pink",
 "res://level_and_stuff/props/grass/": "green",
 "res://level_and_stuff/props/sky/": "teal",
+"res://level_and_stuff/props/torch/": "red",
 "res://level_and_stuff/props/water/": "blue",
 "res://player/": "red"
 }
@@ -134,11 +135,13 @@ attack={
 
 [physics]
 
-3d/default_gravity=17.0
+3d/default_gravity=30.0
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=5
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality=5
 anti_aliasing/quality/msaa_3d=3
 anti_aliasing/quality/screen_space_aa=1
 anti_aliasing/quality/use_debanding=true

@@ -7,30 +7,32 @@ class_name Player3D
 # <========================== Functions ========================================>
 
 
-func _buffered_input(delta: float) -> void:
+func buffered_input(delta: float) -> void:
 	if !is_action_enabled:
 		return
 	if InputBuffer.is_action_press_buffered("dash"):
-		_dash()
+		dash()
 		
 	if (
 		InputBuffer.is_action_press_buffered("jump") and 
 		jump_count < max_jump_count and
 		(can_jump || is_on_floor())
 	): # is on floor or coyote timer or jump count less thn max jump count
-		_jump()
+		jump()
 	if InputBuffer.is_action_press_buffered("attack"):
-		_attack()
+		attack()
+
+
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	_move()
-	_update_state()
-	_update_animation()
+	move()
+	update_state()
+	update_animation()
 
-func _move() -> void:
+func move() -> void:
 	if is_movement_enabled:
 		wish_dir = Input.get_vector("left", "right", "forward", "backward")
 	else:
@@ -47,8 +49,8 @@ func _move() -> void:
 	move_and_slide()
 	
 	if was_on_floor and !is_on_floor():
-		_just_left_ground()
+		just_left_ground()
 		
 	if is_on_floor() and !was_on_floor:
-		_just_landed()
+		just_landed()
 	
