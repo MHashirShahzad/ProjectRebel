@@ -588,6 +588,7 @@ node_connections = [&"output", 0, &"Locomotion"]
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
+dash_velocity = Vector2(15, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
