@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://ckorujxjlvmbk"]
+
+[ext_resource type="Texture2D" uid="uid://c2b1ctli0315y" path="res://assets/sprites/player/player.png" id="1_4hptd"]
+
+[sub_resource type="Curve" id="Curve_rnu4a"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.624113, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_6s4i8"]
+curve = SubResource("Curve_rnu4a")
+
+[sub_resource type="Curve" id="Curve_rtxwn"]
+max_value = 2.0
+_data = [Vector2(0, 0.54945), 0.0, 0.0, 0, 0, Vector2(1, 1.73626), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_pe0bl"]
+curve = SubResource("Curve_rtxwn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pwt8k"]
+gravity = Vector3(0, 0, 0)
+scale_min = 3.5
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_pe0bl")
+color = Color(0.162066, 0.162066, 0.162066, 1)
+alpha_curve = SubResource("CurveTexture_6s4i8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0s72"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="TorusMesh" id="TorusMesh_jytj3"]
+material = SubResource("StandardMaterial3D_b0s72")
+inner_radius = 0.15
+outer_radius = 0.2
+rings = 32
+ring_segments = 16
+
+[node name="VFX" type="GPUParticles3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+speed_scale = 1.5
+randomness = 0.25
+process_material = SubResource("ParticleProcessMaterial_pwt8k")
+draw_pass_1 = SubResource("TorusMesh_jytj3")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0.02, 0)
+visible = false
+layers = 2
+cast_shadow = 2
+shaded = true
+alpha_cut = 3
+texture_filter = 0
+texture = ExtResource("1_4hptd")
+hframes = 31
+frame = 18

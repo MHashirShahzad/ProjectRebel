@@ -1,38 +1,327 @@
-[gd_scene load_steps=17 format=3 uid="uid://bm1476k0oh3bp"]
+[gd_scene load_steps=50 format=3 uid="uid://d35kvypxsr362"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_s7t06"]
-[ext_resource type="Texture2D" uid="uid://bl0k5kb234g1d" path="res://sprites/player/sheet.png" id="2_e4jsu"]
-[ext_resource type="Shader" path="res://player/colorSwapper.gdshader" id="3_16geb"]
-[ext_resource type="Texture2D" uid="uid://cidirhpp2pu3y" path="res://sprites/png/icon.svg" id="3_tkc8s"]
+[ext_resource type="Shape3D" uid="uid://btbb1atbusuek" path="res://player/player_coll_shape.tres" id="2_yslgl"]
+[ext_resource type="Texture2D" uid="uid://ra1jpgi8nk4o" path="res://assets/sprites/player/shadow.png" id="3_t5uke"]
+[ext_resource type="Script" path="res://custom_stuff/colored_collisionshape.gd" id="4_58p5f"]
+[ext_resource type="Texture2D" uid="uid://c2b1ctli0315y" path="res://assets/sprites/player/player.png" id="5_24v88"]
+[ext_resource type="Script" path="res://player/finite_state_machine.gd" id="9_10k5r"]
+[ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hurtbox.gd" id="9_g7ug0"]
+[ext_resource type="Script" path="res://player/state.gd" id="10_26gha"]
+[ext_resource type="Script" path="res://custom_stuff/hit_and_hurt_box/hitbox.gd" id="10_127yq"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tuh0h"]
-size = Vector3(0.089859, 0.178888, 0.0782623)
+[sub_resource type="BoxShape3D" id="BoxShape3D_lhrv4"]
+size = Vector3(0.195236, 0.189697, 0.0874023)
 
 [sub_resource type="Animation" id="Animation_n4smm"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite3D:frame_coords")
+tracks/1/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0587353, -0.00427247, -0.0197754)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:override_mesh_opacity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:margin")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.04]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:custom_solver_bias")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.195236, 0.189697, 0.0874023)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [SubResource("BoxShape3D_lhrv4")]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:disabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("CollisionShape3D/Sprite3D:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_woqol"]
+resource_name = "attack1"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [Vector2i(0, 1)]
+"values": [18, 19, 20, 21, 22]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0472164, 0.000854559, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:override_mesh_opacity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.014, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:margin")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.04]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:custom_solver_bias")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.195236, 0.189697, 0.0874023), Vector3(0.199669, 0.191406, 0.0874023), Vector3(0.141563, 0.189697, 0.0874023)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [SubResource("BoxShape3D_lhrv4"), SubResource("BoxShape3D_lhrv4"), SubResource("BoxShape3D_lhrv4")]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:disabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.233333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_nwn2u"]
+resource_name = "attack2"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [23, 24, 25, 26]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.121915, 0.189697, 0.0874023), Vector3(0.252531, 0.189697, 0.0874023)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [SubResource("BoxShape3D_lhrv4"), SubResource("BoxShape3D_lhrv4"), SubResource("BoxShape3D_lhrv4")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.025, 0, 0), Vector3(-0.025, 0, 0), Vector3(0.036, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:override_mesh_opacity")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.014, 0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:margin")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.04]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:shape:custom_solver_bias")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollisionShape3D/HitBox/ColoredCollisionShape3D:disabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [true, false, true]
 }
 
 [sub_resource type="Animation" id="Animation_ccpy1"]
@@ -41,31 +330,46 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2i(0, 4), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4)]
+"values": [13, 14, 15, 16]
 }
 
 [sub_resource type="Animation" id="Animation_4vw06"]
 resource_name = "falling"
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2i(3, 3)]
+"values": [12]
+}
+
+[sub_resource type="Animation" id="Animation_o0m60"]
+resource_name = "hit"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_kvbj1"]
@@ -75,14 +379,14 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3]
+"values": [4, 5, 6, 7]
 }
 
 [sub_resource type="Animation" id="Animation_1xuld"]
@@ -91,31 +395,30 @@ length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2i(0, 3), Vector2i(1, 3)]
+"values": [9, 10]
 }
 
 [sub_resource type="Animation" id="Animation_r8rgp"]
 resource_name = "jumping"
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2i(2, 3)]
+"update": 0,
+"values": [11]
 }
 
 [sub_resource type="Animation" id="Animation_s4vp7"]
@@ -124,14 +427,14 @@ length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2i(0, 2)]
+"update": 0,
+"values": [8]
 }
 
 [sub_resource type="Animation" id="Animation_c52lh"]
@@ -141,21 +444,24 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame_coords")
+tracks/0/path = NodePath("CollisionShape3D/Sprite3D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
+"values": [0, 1, 2, 3]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3oe43"]
 _data = {
 "RESET": SubResource("Animation_n4smm"),
+"attack1": SubResource("Animation_woqol"),
+"attack2": SubResource("Animation_nwn2u"),
 "dash": SubResource("Animation_ccpy1"),
 "falling": SubResource("Animation_4vw06"),
+"hit": SubResource("Animation_o0m60"),
 "idle": SubResource("Animation_kvbj1"),
 "jump_anticipation": SubResource("Animation_1xuld"),
 "jumping": SubResource("Animation_r8rgp"),
@@ -163,46 +469,203 @@ _data = {
 "walking": SubResource("Animation_c52lh")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8y6jw"]
-shader = ExtResource("3_16geb")
-shader_parameter/new_color = Color(0.260712, 0.28186, 1.44392e-07, 1)
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nrhnu"]
+animation = &"attack1"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b261t"]
-shader = ExtResource("3_16geb")
-shader_parameter/new_color = Color(1, 0, 1, 1)
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fksgj"]
+animation = &"dash"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p4q4c"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ttm5n"]
+animation = &"jump_anticipation"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c3m8h"]
+animation = &"jumping"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_51mjb"]
+animation = &"walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p6c44"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jldsv"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.WALKING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xp8ua"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.IDLE"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3qaqu"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.JUMP_ANTICIPATION"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7l7yx"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1f0hx"]
+advance_mode = 2
+advance_expression = "!(player.current_state == player.STATE.JUMPING)"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mwxaa"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.JUMP_ANTICIPATION"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h8tfx"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.DASHING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cmyhl"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.DASHING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u236e"]
+advance_mode = 2
+advance_expression = "!(player.current_state == player.STATE.DASHING)"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y0tog"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.DASHING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6u50v"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.ATTACKING_1"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_74sbj"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.IDLE"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pef00"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.ATTACKING_1"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_awei6"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.JUMPING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d64eu"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.WALKING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y2804"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.JUMPING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ouxq5"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.JUMPING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eepf6"]
+advance_mode = 2
+advance_expression = "player.current_state == player.STATE.JUMPING"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_m0r7g"]
+states/End/position = Vector2(1071, 50)
+states/Start/position = Vector2(-62, 6)
+states/attack1/node = SubResource("AnimationNodeAnimation_nrhnu")
+states/attack1/position = Vector2(214.293, 185)
+states/dash/node = SubResource("AnimationNodeAnimation_fksgj")
+states/dash/position = Vector2(187, -189)
+states/idle/node = SubResource("AnimationNodeAnimation_p4q4c")
+states/idle/position = Vector2(71, 6)
+states/jump_anticipation/node = SubResource("AnimationNodeAnimation_ttm5n")
+states/jump_anticipation/position = Vector2(828, 35)
+states/jumping/node = SubResource("AnimationNodeAnimation_c3m8h")
+states/jumping/position = Vector2(569, -189)
+states/walking/node = SubResource("AnimationNodeAnimation_51mjb")
+states/walking/position = Vector2(502, 185)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p6c44"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_jldsv"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_xp8ua"), "idle", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_3qaqu"), "jump_anticipation", "jumping", SubResource("AnimationNodeStateMachineTransition_7l7yx"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_1f0hx"), "walking", "jump_anticipation", SubResource("AnimationNodeStateMachineTransition_mwxaa"), "idle", "dash", SubResource("AnimationNodeStateMachineTransition_h8tfx"), "jumping", "dash", SubResource("AnimationNodeStateMachineTransition_cmyhl"), "dash", "idle", SubResource("AnimationNodeStateMachineTransition_u236e"), "walking", "dash", SubResource("AnimationNodeStateMachineTransition_y0tog"), "idle", "attack1", SubResource("AnimationNodeStateMachineTransition_6u50v"), "attack1", "idle", SubResource("AnimationNodeStateMachineTransition_74sbj"), "walking", "attack1", SubResource("AnimationNodeStateMachineTransition_pef00"), "dash", "jumping", SubResource("AnimationNodeStateMachineTransition_awei6"), "attack1", "walking", SubResource("AnimationNodeStateMachineTransition_d64eu"), "walking", "jumping", SubResource("AnimationNodeStateMachineTransition_y2804"), "idle", "jumping", SubResource("AnimationNodeStateMachineTransition_ouxq5"), "attack1", "jumping", SubResource("AnimationNodeStateMachineTransition_eepf6")]
+graph_offset = Vector2(-315.707, -215)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4o12y"]
+nodes/Locomotion/node = SubResource("AnimationNodeStateMachine_m0r7g")
+nodes/Locomotion/position = Vector2(-20, 140)
+node_connections = [&"output", 0, &"Locomotion"]
 
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.168594, 0)
 script = ExtResource("1_s7t06")
+dash_velocity = Vector2(15, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00502778, -0.0197303, 0.00357819)
-shape = SubResource("BoxShape3D_tuh0h")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+shape = ExtResource("2_yslgl")
+script = ExtResource("4_58p5f")
+_color = Color(0, 1, 1, 1)
+_mesh_opacity = 0.0
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
+[node name="Sprite3D" type="Sprite3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 0.02, 0)
+layers = 2
 cast_shadow = 2
+lod_bias = 128.0
 shaded = true
-alpha_cut = 2
+alpha_cut = 3
 texture_filter = 0
-texture = ExtResource("2_e4jsu")
-hframes = 16
-vframes = 16
-frame = 16
+texture = ExtResource("5_24v88")
+hframes = 31
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="HurtBox" type="Area3D" parent="CollisionShape3D" node_paths=PackedStringArray("hurtbox_owner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+script = ExtResource("9_g7ug0")
+hurtbox_owner = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionShape3D/HurtBox"]
+shape = ExtResource("2_yslgl")
+script = ExtResource("4_58p5f")
+_color = Color(1, 0, 0, 1)
+_mesh_opacity = 0.0
+
+[node name="HitBox" type="Area3D" parent="CollisionShape3D" node_paths=PackedStringArray("to_ignore")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+script = ExtResource("10_127yq")
+kb_strength = 20.0
+hit_stop = 0.3
+to_ignore = NodePath("../..")
+
+[node name="ColoredCollisionShape3D" type="CollisionShape3D" parent="CollisionShape3D/HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0587353, -0.00427247, -0.0197754)
+shape = SubResource("BoxShape3D_lhrv4")
+disabled = true
+script = ExtResource("4_58p5f")
+_color = Color(1, 1, 0, 1)
+_image_scale = Vector3(0, 1, 1)
+_mesh_opacity = 0.0
+override_mesh_opacity = 0.0
+
+[node name="BlobShadow" type="Decal" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -0.5, 4.37114e-08, 0, -4.37114e-08, -0.5, 0, -0.223315, -1.95228e-08)
+size = Vector3(0.197968, 0.521268, 0.199891)
+texture_albedo = ExtResource("3_t5uke")
+modulate = Color(0, 0, 0, 0.52549)
+cull_mask = 1048573
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3oe43")
 }
-autoplay = "idle"
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_8y6jw")
-offset_left = 194.0
-offset_top = -1.0
-offset_right = 234.0
-offset_bottom = 39.0
-color = Color(0.267914, 0.209056, 0.312517, 1)
+[node name="DEPRECATED" type="AnimationTree" parent="."]
+active = false
+deterministic = false
+tree_root = SubResource("AnimationNodeBlendTree_4o12y")
+anim_player = NodePath("../AniPlayer")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_b261t")
-texture = ExtResource("3_tkc8s")
+[node name="STATE" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.137405, 0)
+visible = false
+billboard = 1
+shaded = true
+text = "IDLE"
+font_size = 20
+outline_size = 0
+script = ExtResource("10_26gha")
+
+[node name="LandVFX" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.103255, 0)
+
+[node name="FSM" type="Node" parent="."]
+script = ExtResource("9_10k5r")

@@ -1,0 +1,219 @@
+[gd_scene load_steps=11 format=3 uid="uid://8wwentc654p3"]
+
+[ext_resource type="Script" path="res://level_and_stuff/levels/test.gd" id="1_s0uvb"]
+[ext_resource type="PackedScene" uid="uid://cl83qsx5bsvc4" path="res://level_and_stuff/props/world_environment.tscn" id="2_d8fs6"]
+[ext_resource type="PackedScene" uid="uid://dflm2k2u8b5mu" path="res://level_and_stuff/props/sky/clouds/clouds_shadowless.tscn" id="3_7sfil"]
+[ext_resource type="Shader" path="res://level_and_stuff/props/sky/clouds/clouds.gdshader" id="4_111rd"]
+[ext_resource type="PackedScene" uid="uid://d35kvypxsr362" path="res://player/player.tscn" id="5_x50ux"]
+[ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="13_6eo8x"]
+
+[sub_resource type="Gradient" id="Gradient_emp8x"]
+offsets = PackedFloat32Array(0.52649, 0.993378)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jy2wa"]
+frequency = 0.0154
+fractal_weighted_strength = 0.02
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5qba4"]
+invert = true
+seamless = true
+color_ramp = SubResource("Gradient_emp8x")
+noise = SubResource("FastNoiseLite_jy2wa")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dwytk"]
+render_priority = 0
+shader = ExtResource("4_111rd")
+shader_parameter/isSoft = true
+shader_parameter/speed = 0.005
+shader_parameter/brightness = 0.1
+shader_parameter/threshold = 0.613
+shader_parameter/fluffiness = 0.1
+shader_parameter/noiseTexture = SubResource("NoiseTexture2D_5qba4")
+
+[node name="Test" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
+script = ExtResource("1_s0uvb")
+
+[node name="Level" type="Node" parent="."]
+
+[node name="SpawnBlock" type="Node3D" parent="Level"]
+
+[node name="SpawnBLock" type="CSGBox3D" parent="Level/SpawnBlock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.209858, 0, -0.770154)
+use_collision = true
+size = Vector3(36.0436, 1, 24.0294)
+
+[node name="Wall" type="CSGBox3D" parent="Level/SpawnBlock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.209858, 6.88919, -12.0602)
+use_collision = true
+size = Vector3(36.0436, 14.7784, 1.44924)
+
+[node name="Wall3" type="CSGBox3D" parent="Level/SpawnBlock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.139, 6.88919, -12.0602)
+use_collision = true
+size = Vector3(56.6039, 14.7784, 1.44924)
+
+[node name="Wall2" type="CSGBox3D" parent="Level/SpawnBlock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.3818, 6.88919, -0.754996)
+use_collision = true
+size = Vector3(0.860258, 14.7784, 24.0597)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Level/SpawnBlock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.8002, 3.59917, 0)
+operation = 2
+use_collision = true
+
+[node name="Wall3" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.103855, 3.29002, -0.754996)
+use_collision = true
+size = Vector3(0.860258, 14.7784, 24.0597)
+
+[node name="Wall5" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8037, 3.29002, 3.42857)
+use_collision = true
+size = Vector3(0.860258, 14.7784, 32.4268)
+
+[node name="Wall7" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8037, 3.29002, 66.7732)
+use_collision = true
+size = Vector3(0.860258, 14.7784, 32.4268)
+
+[node name="Wall8" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 93.8788, 3.29002, 66.7732)
+use_collision = true
+size = Vector3(0.860258, 14.7784, 32.4268)
+
+[node name="Wall6" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 93.2488, 3.29002, 3.42857)
+use_collision = true
+size = Vector3(0.860258, 14.7784, 32.4268)
+
+[node name="Wall4" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.6852, -0.877718, -1.05076)
+use_collision = true
+size = Vector3(36.6898, 6.4429, 1.3245)
+
+[node name="SUb" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.3873, -0.898346, 2.37037)
+operation = 2
+size = Vector3(38.9448, 6.0567, 5.13348)
+
+[node name="Wall9" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.3388, 3.29002, 18.947)
+use_collision = true
+size = Vector3(56.6039, 14.7784, 1.44924)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D/Wall9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.30599, -2.81455, 0.715626)
+operation = 2
+size = Vector3(6.84666, 8.76172, 8.85126)
+
+[node name="Wall11" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.3388, 3.29002, 82.5362)
+use_collision = true
+size = Vector3(56.6039, 14.7784, 1.44924)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D/Wall11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.30599, -2.81455, 0.715626)
+operation = 2
+size = Vector3(6.84666, 8.76172, 8.85126)
+
+[node name="Wall12" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.3388, 3.29002, 50.939)
+use_collision = true
+size = Vector3(56.6039, 14.7784, 1.44924)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Level/SpawnBlock/CSGCombiner3D/Wall12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.30599, -2.81455, 0.715626)
+operation = 2
+size = Vector3(6.84666, 8.76172, 8.85126)
+
+[node name="Path" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.0273, 0, 1.43188)
+use_collision = true
+size = Vector3(37.5391, 1, 6.19802)
+
+[node name="Path2" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.9155, 0, 35.4383)
+use_collision = true
+size = Vector3(6.93807, 1, 31.3753)
+
+[node name="Path3" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.9155, 0, 97.8343)
+use_collision = true
+size = Vector3(6.93807, 1, 29.5011)
+
+[node name="Path4" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 119.822, 0, 123.817)
+use_collision = true
+size = Vector3(30.9767, 1, 7.12552)
+
+[node name="Path5" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.1109, 0, 60.7201)
+use_collision = true
+size = Vector3(37.3886, 1, 7.12552)
+
+[node name="Path6(BLOCKED)" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 131.259, 0, 70.025)
+use_collision = true
+size = Vector3(37.3886, 1, 7.12552)
+
+[node name="JumpBlock" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.0547, 0, 3.53305)
+use_collision = true
+size = Vector3(57.1847, 1, 32.6358)
+
+[node name="CenterBlock" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.0547, 0, 66.7506)
+use_collision = true
+size = Vector3(57.1847, 1, 32.6358)
+
+[node name="EnemyBlock" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 165.025, 0, 70.6178)
+use_collision = true
+size = Vector3(30.5182, 1, 24.9014)
+
+[node name="GodotBlock" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.900461, 0, 59.7299)
+use_collision = true
+size = Vector3(38.7467, 1, 18.5944)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.8776, 0, 121.58)
+use_collision = true
+size = Vector3(38.7467, 1, 18.5944)
+
+[node name="SwordBlock" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155.966, 0, 124.086)
+use_collision = true
+size = Vector3(41.6814, 1, 39.0273)
+
+[node name="BossBlock" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190.814, 0, -19.0762)
+use_collision = true
+size = Vector3(111.378, 1, 67.2878)
+
+[node name="Env" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Env"]
+transform = Transform3D(-0.869533, -0.210671, 0.446688, 0.493018, -0.423532, 0.75997, 0.0290832, 0.881044, 0.472139, -0.139587, -3.8147e-06, 0.0012207)
+light_color = Color(1, 1, 0.894118, 1)
+shadow_enabled = true
+shadow_blur = 2.0
+
+[node name="Clouds" parent="Env" instance=ExtResource("3_7sfil")]
+transform = Transform3D(279.518, 0, 0, 0, 1, 0, 0, 0, 238.198, 0, 62.1593, 20.7283)
+visible = false
+material_override = SubResource("ShaderMaterial_dwytk")
+skeleton = NodePath("../..")
+
+[node name="WorldEnvironment" parent="Env" instance=ExtResource("2_d8fs6")]
+
+[node name="CameraPlayer" type="Node" parent="."]
+
+[node name="Player" parent="CameraPlayer" instance=ExtResource("5_x50ux")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -2.94504, 4.57635, -0.800705)
+
+[node name="Camera" parent="CameraPlayer" instance=ExtResource("13_6eo8x")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 22.5535, 0.499996, -1.42349)

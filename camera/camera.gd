@@ -49,8 +49,11 @@ func update_cam():
 	destined_pos.z = largest_z
 	destined_pos += fixed_dist
 	
+	# constant
+	largest_dist = clamp(largest_dist, 0, 35)
+	destined_pos.z += largest_dist / 3 
+		
 	# Angele and pos
 	self.rotation_degrees.x = angle
 	self.global_position = lerp(global_position, destined_pos, cam_speed)
 	
-	print_rich(largest_z, largest_dist)
