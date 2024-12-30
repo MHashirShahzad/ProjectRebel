@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://8wwentc654p3"]
+[gd_scene load_steps=21 format=3 uid="uid://8wwentc654p3"]
 
 [ext_resource type="Script" path="res://level_and_stuff/levels/test.gd" id="1_s0uvb"]
 [ext_resource type="PackedScene" uid="uid://dflm2k2u8b5mu" path="res://level_and_stuff/props/sky/clouds/clouds_shadowless.tscn" id="3_7sfil"]
@@ -13,30 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://b6kmri1nmufuf" path="res://camera/camera.tscn" id="13_6eo8x"]
 [ext_resource type="PackedScene" uid="uid://dw4etb22jtvoa" path="res://enemy/enemy.tscn" id="13_eexam"]
 [ext_resource type="PackedScene" uid="uid://bjcojs3ybpuks" path="res://level_and_stuff/props/torch/torch.tscn" id="13_nsfb5"]
-
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_oc1yt"]
-
-[sub_resource type="Sky" id="Sky_5i83e"]
-sky_material = SubResource("PhysicalSkyMaterial_oc1yt")
-radiance_size = 0
-
-[sub_resource type="Environment" id="Environment_25t8a"]
-background_energy_multiplier = 0.0
-sky = SubResource("Sky_5i83e")
-ambient_light_source = 3
-ambient_light_sky_contribution = 0.1
-reflected_light_source = 2
-tonemap_mode = 3
-ssr_enabled = true
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_enabled = true
-sdfgi_use_occlusion = true
-glow_enabled = true
-glow_bloom = 0.05
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.01
-volumetric_fog_ambient_inject = 16.0
 
 [sub_resource type="Gradient" id="Gradient_emp8x"]
 offsets = PackedFloat32Array(0.52649, 0.993378)
@@ -77,9 +53,6 @@ radius = 1.21811
 [node name="Test" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.139587, -3.8147e-06, 0.0012207)
 script = ExtResource("1_s0uvb")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_25t8a")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.869533, -0.210669, 0.446689, 0.493018, -0.423533, 0.75997, 0.0290832, 0.881044, 0.472139, 0, 0, 0)
